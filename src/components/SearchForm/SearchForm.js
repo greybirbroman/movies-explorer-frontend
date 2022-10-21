@@ -12,6 +12,7 @@ function SearchForm() {
             name="search-input"
             placeholder="Фильм"
             className="search__input"
+            required
           ></input>
           <button type="submit" className="search__button"></button>
         </fieldset>

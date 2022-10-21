@@ -2,6 +2,7 @@ import SearchForm from "../SearchForm/SearchForm";
 import MoviesCardList from "../MoviesCardList/MoviesCardList";
 import Header from "../Header/Header";
 import Navigation from "../Navigation/Navigation";
+import Footer from "../Footer/Footer";
 
 function SavedMovies() {
   return (
@@ -9,8 +10,11 @@ function SavedMovies() {
       <Header>
         <Navigation />
       </Header>
-      <SearchForm />
-      <MoviesCardList />
+      <main>
+        <SearchForm />
+        <MoviesCardList />
+      </main>
+      <Footer />
     </>
   );
 }

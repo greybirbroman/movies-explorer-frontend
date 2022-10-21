@@ -1,7 +1,13 @@
+.movie {
+  box-shadow: 0px 4px 30px rgba(0, 0, 0, 0.08);
+  line-height: 0;
+}
+
 .movie__btn {
   width: 30px;
   height: 30px;
   border: none;
+  padding: 0;
   border-radius: 50%;
   background: transparent url(../../images/favorite-movie-icon.svg) no-repeat
     center;
@@ -27,7 +33,7 @@
 .movie__container {
   display: flex;
   justify-content: space-between;
-  padding: 0 13px 14px;
+  padding: 14px 13px 14px;
 }
 
 .movie__title {
@@ -46,5 +52,5 @@
 
 .movie__image {
   width: 100%;
-  object-fit: cover;
+  object-fit: contain;
 }

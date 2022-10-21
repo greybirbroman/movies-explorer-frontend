@@ -4,6 +4,7 @@ import Navigation from "../Navigation/Navigation";
 import SearchForm from "../SearchForm/SearchForm";
 import MoviesCardList from "../MoviesCardList/MoviesCardList";
 import ButtonElse from "../ButtonElse/ButtonElse";
+import Footer from "../Footer/Footer";
 
 function Movies() {
   return (
@@ -11,9 +12,12 @@ function Movies() {
       <Header>
         <Navigation />
       </Header>
-      <SearchForm />
-      <MoviesCardList />
-      <ButtonElse />
+      <main>
+        <SearchForm />
+        <MoviesCardList />
+        <ButtonElse />
+      </main>
+      <Footer />
     </>
   );
 }

@@ -10,7 +10,7 @@ function MoviesCard() {
             <h3 className="movie__title">33 слова о дизайне</h3>
             <span className="movie__direction">1ч 47м</span>
           </div>
-          <div className="movie__btn"></div>
+          <button className="movie__btn"></button>
         </div>
 
         <img
@@ -25,7 +25,7 @@ function MoviesCard() {
             <h3 className="movie__title">33 слова о дизайне</h3>
             <span className="movie__direction">1ч 47м</span>
           </div>
-          <div className="movie__btn"></div>
+          <button className="movie__btn"></button>
         </div>
 
         <img
@@ -40,7 +40,7 @@ function MoviesCard() {
             <h3 className="movie__title">33 слова о дизайне</h3>
             <span className="movie__direction">1ч 47м</span>
           </div>
-          <div className="movie__btn"></div>
+          <button className="movie__btn"></button>
         </div>
 
         <img
@@ -55,7 +55,7 @@ function MoviesCard() {
             <h3 className="movie__title">33 слова о дизайне</h3>
             <span className="movie__direction">1ч 47м</span>
           </div>
-          <div className="movie__btn"></div>
+          <button className="movie__btn"></button>
         </div>
 
         <img
@@ -70,7 +70,7 @@ function MoviesCard() {
             <h3 className="movie__title">33 слова о дизайне</h3>
             <span className="movie__direction">1ч 47м</span>
           </div>
-          <div className="movie__btn"></div>
+          <button className="movie__btn"></button>
         </div>
 
         <img

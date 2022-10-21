@@ -7,10 +7,12 @@ import AboutMe from "./AboutMe/AboutMe";
 function Landing() {
   return (
     <div className="landing">
-      <Promo />
-      <AboutProject />
-      <Techs />
-      <AboutMe />
+      <main>
+        <Promo />
+        <AboutProject />
+        <Techs />
+        <AboutMe />
+      </main>
     </div>
   );
 }
