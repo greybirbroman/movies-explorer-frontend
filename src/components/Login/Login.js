@@ -9,7 +9,7 @@ function Login() {
       <header className="login__header">
         <Logo />
       </header>
-      <Form title={'Рады видеть!'} name={'regForm'}>
+      <Form title={"Рады видеть!"} name={"regForm"}>
         <fieldset className="login__fields">
           <label className="login__label">E-mail</label>
           <input type="email" className="login__input"></input>
@@ -20,8 +20,14 @@ function Login() {
           <input type="password" className="login__input"></input>
         </fieldset>
         <div className="login__input-line"></div>
+      <SubmitGroup
+        submitName={"Войти"}
+        linkName={"Регистрация"}
+        linkDestination={"/signup"}
+      >
+        Еще не зарегестированы?&ensp;
+      </SubmitGroup>
       </Form>
-      <SubmitGroup submitName={"Войти"} linkName={'Регистрация'} linkDestination={'/signup'}>Еще не зарегестированы?&ensp;</SubmitGroup>
     </section>
   );
 }

@@ -26,14 +26,14 @@ function Register() {
             <input type="password" className="register__input"></input>
           </fieldset>
           <div className="register__input-line"></div>
+          <SubmitGroup
+            submitName={"Зарегестрироваться"}
+            linkName={"Войти"}
+            linkDestination={"/signin"}
+          >
+            Уже зарегестрировались?&ensp;
+          </SubmitGroup>
         </Form>
-        <SubmitGroup
-          submitName={"Зарегестрироваться"}
-          linkName={"Войти"}
-          linkDestination={"/signin"}
-        >
-          Уже зарегестрировались?&ensp;
-        </SubmitGroup>
       </section>
     </>
   );
