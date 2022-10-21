@@ -1,0 +1,31 @@
+.button {
+  font-family: "Inter";
+  min-height: 166px;
+  display: flex;
+}
+
+.button__else {
+  min-width: 320px;
+  padding: 9px;
+  margin: 0 auto;
+  justify-content: center;
+  align-self: center;
+  background-color: #fff;
+  border: 1px solid #e8e8e8;
+  border-radius: 7px;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 14px;
+  transition: 0.7s ease;
+}
+
+.button__else:hover {
+  cursor: pointer;
+  background-color: #2BE080;
+}
+
+@media screen and (max-width: 400px) {
+  .button__else {
+    min-width: 240px;
+  }
+}

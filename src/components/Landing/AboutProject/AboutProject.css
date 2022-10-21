@@ -1,0 +1,150 @@
+.project {
+  margin: 0;
+  padding: 110px 70px;
+}
+
+.brief {
+  list-style-type: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  column-gap: 40px;
+  padding: 0;
+  padding-top: 70px;
+  margin: 0;
+}
+
+.brief__title {
+  margin: 0;
+  font-weight: normal;
+  font-size: 20px;
+  line-height: 24px;
+  letter-spacing: -0.04em;
+}
+
+.brief__column {
+  padding: 0;
+  margin: 0;
+}
+
+.project__title {
+  color: #000;
+  font-size: 22px;
+  font-weight: normal;
+  line-height: 26px;
+  letter-spacing: -0.04em;
+  padding: 0;
+  padding-bottom: 23px;
+  border-bottom: 1px solid black;
+  margin: 0;
+}
+
+.brief__text {
+  color: #000;
+  font-size: 14px;
+  font-weight: normal;
+  line-height: 20px;
+
+  padding: 0;
+  padding-top: 26px;
+  margin: 0;
+}
+
+.scale {
+  display: grid;
+  grid-template-columns: 1fr 4fr;
+  grid-template-rows: 36px 31px;
+  justify-items: stretch;
+  padding: 0;
+  padding-top: 110px;
+  margin: 0;
+}
+
+.scale__text {
+  font-size: 14px;
+  font-weight: normal;
+  text-align: center;
+  padding: 0;
+  margin: 0;
+}
+
+.scale__chart {
+  color: #000;
+  line-height: 36px;
+}
+
+.scale__chart_green {
+  background-color: #2be080;
+}
+
+.scale__chart_gray {
+  background-color: #f2f2f2;
+}
+
+.scale__item {
+  color: #a0a0a0;
+  line-height: 17px;
+  align-self: end;
+}
+
+@media screen and (max-width: 770px) {
+  .project {
+    padding: 90px 50px;
+  }
+
+  .brief {
+    column-gap: 30px;
+  }
+
+  .brief__text {
+    font-size: 12px;
+    line-height: 18px;
+    padding-top: 22px;
+  }
+
+  .scale {
+    grid-template-columns: minmax(100px, 140px) minmax(184px, 528px);
+    padding-top: 93px;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .brief {
+    column-gap: 0px;
+    row-gap: 56px;
+    padding-top: 60px;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .project {
+    padding: 70px 18px;
+  }
+
+  .brief__title {
+    font-size: 18px;
+    line-height: 22px;
+  }
+
+  .brief__text {
+    font-size: 11px;
+    line-height: 16px;
+    padding-top: 16px;
+  }
+
+  .scale {
+    grid-template-rows: 35px 23px;
+    padding-top: 60px;
+  }
+
+  .scale__chart {
+    line-height: 35px;
+  }
+
+  .scale__item {
+    line-height: 13px;
+  }
+
+  .scale__text {
+    font-size: 11px;
+  }
+}
