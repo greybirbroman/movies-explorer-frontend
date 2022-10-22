@@ -1,0 +1,93 @@
+.menu {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  width: 93%;
+}
+
+.menu__container {
+  display: flex;
+}
+
+.menu__link {
+  text-decoration: none;
+  color: #000;
+  font-size: 14px;
+  font-weight: normal;
+  line-height: 18px;
+  text-align: center;
+  display: block;
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  transition: 0.7s ease;
+}
+
+.menu__link:hover {
+  opacity: 0.5;
+}
+
+.menu__link_active {
+  font-weight: 500;
+  pointer-events: none;
+}
+
+.menu__link_film + .menu__link_film {
+  margin-left: 20px;
+}
+
+.menu__link_profile {
+  background-color: #f9f9f9;
+  border-radius: 20px;
+
+  font-weight: 500;
+  line-height: 32px;
+
+  width: 100px;
+  height: 32px;
+  margin-left: 50px;
+}
+
+.menu__link_profile:hover {
+  background-color: #2BE080;
+  opacity: 1;
+}
+
+.menu__button {
+  background-image: url(../../images/menu-burger.svg);
+  background-color: #fff;
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  background-size: contain;
+  width: 44px;
+  height: 44px;
+  display: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.menu__button:hover {
+  opacity: 0.5;
+}
+
+@media screen and (max-width: 770px) {
+  .menu__link {
+    display: none;
+  }
+
+  .menu__button {
+    display: block;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .menu__button {
+    width: 40px;
+    height: 40px;
+  }
+}

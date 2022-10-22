@@ -1,0 +1,48 @@
+.submit-group {
+  margin: 0;
+  padding: 0;
+  padding-top: 70px;
+  padding-bottom: 70px;
+  border: 0;
+  font-family: "Inter";
+  max-width: 400px;
+  box-sizing: border-box;
+}
+
+.submit-group__btn {
+  padding: 15px;
+  width: 100%;
+  border: none;
+  border-radius: 3px;
+  background-color: #2be080;
+  color: #fff;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 17px;
+  transition: 0.7s ease;
+}
+
+.submit-group__btn:hover {
+  cursor: pointer;
+  opacity: 0.7;
+}
+
+.submit-group__text {
+  text-align: center;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 17px;
+  color: #a0a0a0;
+  margin-bottom: 0;
+}
+
+.submit-group__link {
+  text-decoration: none;
+  color: #2be080;
+}
+
+@media screen and (max-width: 400px) {
+  .submit-group {
+    padding: 160px 0 0;
+  }
+}
