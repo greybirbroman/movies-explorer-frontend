@@ -21,7 +21,7 @@
 
 .button__else:hover {
   cursor: pointer;
-  background-color: #2BE080;
+  background-color: #2be080;
 }
 
 @media screen and (max-width: 400px) {

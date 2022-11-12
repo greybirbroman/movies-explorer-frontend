@@ -1,23 +1,57 @@
 import "./Movies.css";
-import Header from "../Header/Header";
-import Navigation from "../Navigation/Navigation";
 import SearchForm from "../SearchForm/SearchForm";
 import MoviesCardList from "../MoviesCardList/MoviesCardList";
 import ButtonElse from "../ButtonElse/ButtonElse";
+import React, { useEffect, useState } from "react";
+import Header from "../Header/Header";
+import Navigation from "../Navigation/Navigation";
+import NavTab from "../NavTab/NavTab";
 import Footer from "../Footer/Footer";
+import Loader from "../Loader/Loader";
 
-function Movies() {
+function Movies({
+  onSearch,
+  onToggleSwitchClick,
+  isChecked,
+  movies,
+  isLoading,
+  onLike,
+  onUnlike,
+  savedMovies,
+  errorMessage,
+  showMoreResults,
+  moreResults,
+  lastSearchWord,
+  loggedIn,
+}) {
   return (
     <>
-      <Header>
-        <Navigation />
-      </Header>
-      <main>
-        <SearchForm />
-        <MoviesCardList />
-        <ButtonElse />
+      <Header loggedIn={loggedIn} />
+
+      <main className="movies">
+        <SearchForm
+          onSearch={onSearch}
+          onToggleSwitchClick={onToggleSwitchClick}
+          isChecked={isChecked}
+          lastSearchWord={lastSearchWord}
+        />
+        <Loader isLoading={isLoading} />
+        <MoviesCardList
+          savedMovies={savedMovies}
+          movies={movies}
+          onLike={onLike}
+          onUnlike={onUnlike}
+          button="movie__btn_type_active"
+          isLoading={isLoading}
+          errorMessage={errorMessage}
+        />
+        {moreResults && !isLoading ? (
+          <ButtonElse onClick={showMoreResults} />
+        ) : (
+          <React.Fragment />
+        )}
       </main>
-      <Footer />
+      {!isLoading ? <Footer /> : null}
     </>
   );
 }

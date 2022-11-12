@@ -42,7 +42,7 @@ function Navigation() {
         Аккаунт
       </NavLink>
       <button className="menu__button" onClick={handleClick} />
-      {isPopupVisible && <PopupNavigation handleClose={handleClose}/>}
+      {isPopupVisible && <PopupNavigation handleClose={handleClose} />}
     </nav>
   );
 }

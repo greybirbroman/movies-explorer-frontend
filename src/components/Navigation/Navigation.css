@@ -41,20 +41,26 @@
 }
 
 .menu__link_profile {
-  background-color: #f9f9f9;
+  background: linear-gradient(
+    to left,
+    rgb(72, 204, 224) 1%,
+    rgb(66, 139, 235) 18%,
+    rgb(81, 90, 220) 38%,
+    rgb(190, 64, 192) 59%,
+    rgb(250, 102, 65) 99%
+  );
+  color: #fff;
   border-radius: 20px;
-
   font-weight: 500;
   line-height: 32px;
-
   width: 100px;
   height: 32px;
   margin-left: 50px;
 }
 
 .menu__link_profile:hover {
-  background-color: #2BE080;
-  opacity: 1;
+  background-color: #2be080;
+  opacity: 0.7;
 }
 
 .menu__button {

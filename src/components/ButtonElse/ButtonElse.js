@@ -1,9 +1,11 @@
 import "./ButtonElse.css";
 
-function ButtonElse() {
+function ButtonElse({ onClick }) {
   return (
     <section className="button">
-      <button className="button__else">Ещё</button>
+      <button type='button' className="button__else" onClick={onClick}>
+        Ещё
+      </button>
     </section>
   );
 }

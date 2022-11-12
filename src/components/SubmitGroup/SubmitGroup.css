@@ -7,6 +7,7 @@
   font-family: "Inter";
   max-width: 400px;
   box-sizing: border-box;
+  
 }
 
 .submit-group__btn {
@@ -22,9 +23,31 @@
   transition: 0.7s ease;
 }
 
+.submit-group__btn:disabled {
+  color: #000;
+  background-color: rgba(249, 249, 249, 1);
+  border: 1px solid #000;
+  opacity: .5;
+}
+
 .submit-group__btn:hover {
   cursor: pointer;
   opacity: 0.7;
+}
+
+.submit-group__btn:disabled:hover {
+  cursor: initial;
+  opacity: .5;
+}
+
+.submit-group__error {
+  color: #EE3465;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 12px;
+  text-align: center;
+  margin: 0;
+  padding: 18px;
 }
 
 .submit-group__text {
@@ -43,6 +66,6 @@
 
 @media screen and (max-width: 400px) {
   .submit-group {
-    padding: 160px 30px 0;
+    padding: 160px 0 0;
   }
 }
