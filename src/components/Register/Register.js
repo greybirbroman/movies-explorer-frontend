@@ -95,7 +95,6 @@ function Register({ onRegister, message, resetMessage }) {
             ></input>
             <span className={spanErrorClass}>{errors?.password}</span>
           </fieldset>
-
           <SubmitGroup
             submitName={"Зарегестрироваться"}
             linkName={"Войти"}
