@@ -4,4 +4,4 @@
 
 IP 178.154.223.179
 
-Domain https://api.greybirbmovies.nomoredomains.icu
+Domain http://greybirbmovies.nomoredomains.icu

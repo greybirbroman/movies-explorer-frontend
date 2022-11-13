@@ -25,8 +25,7 @@ function App() {
 
   const [profileUpdateMessage, setProfileUpdateMessage] = useState("");
   const [profileErrorMessage, setProfileErrorMessage] = useState("");
-  const [isProfileUpdateSuccessful, setIsProfileUpdateSuccessful] =
-    useState(false);
+  const [isProfileUpdateSuccessful, setIsProfileUpdateSuccessful] = useState(false);
 
   const [resultMovies, setResultMovies] = useState([]);
   const [filteredMovies, setFilteredMovies] = useState([]);
@@ -415,9 +414,9 @@ function App() {
   };
 
   // Проверяем массив перед Рендером карточек
-  const moviesRender = (movies, itemsToShow) => {
+  const moviesRender = (movies, itemsToRender) => {
     if (movies) {
-      if (movies.length > itemsToShow) {
+      if (movies.length > itemsToRender) {
         setMoreResults(true);
         setResultMovies(movies.slice(0, limit));
       } else {
@@ -443,6 +442,7 @@ function App() {
   };
 
   // Сохранить фильм в избранное и отправить его на сервер
+  
   const saveMovie = (cardMovie) => {
     mainApi
       .postNewMovie(cardMovie)
@@ -454,6 +454,7 @@ function App() {
       })
       .catch((err) => console.log(err));
   };
+
 
   const idCardSearch = (card) => {
     if (!card._id) {
@@ -467,7 +468,7 @@ function App() {
   };
 
   // Удалить фильм с сервера и из списка сохраненных фильмов
-  const removeMovie = (cardMovie) => {
+  const deleteMovie = (cardMovie) => {
     const searchId = idCardSearch(cardMovie);
     mainApi
       .deleteMovie(searchId)
@@ -508,7 +509,7 @@ function App() {
             movies={resultMovies}
             onSearch={handleMoviesSearch}
             onLike={saveMovie}
-            onUnlike={removeMovie}
+            onUnlike={deleteMovie}
             isLoading={isLoading}
             moreResults={moreResults}
             showMoreResults={showMore}
@@ -524,7 +525,7 @@ function App() {
             component={SavedMovies}
             movies={likedMovies}
             onSearch={handleSavedMoviesSearch}
-            onUnlike={removeMovie}
+            onUnlike={deleteMovie}
             isLoading={isLoading}
             loggedIn={loggedIn}
             savedMovies={likedMovies}

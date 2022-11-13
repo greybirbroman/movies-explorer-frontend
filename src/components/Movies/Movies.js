@@ -2,10 +2,8 @@ import "./Movies.css";
 import SearchForm from "../SearchForm/SearchForm";
 import MoviesCardList from "../MoviesCardList/MoviesCardList";
 import ButtonElse from "../ButtonElse/ButtonElse";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Header from "../Header/Header";
-import Navigation from "../Navigation/Navigation";
-import NavTab from "../NavTab/NavTab";
 import Footer from "../Footer/Footer";
 import Loader from "../Loader/Loader";
 
