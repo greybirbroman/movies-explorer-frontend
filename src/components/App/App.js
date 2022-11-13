@@ -17,6 +17,9 @@ import {
   SEARCH_ERROR_NO_DATA,
   SEARCH_WORD_ERROR,
   NO_SHORTS,
+  SEARCH_ERROR,
+  SAVE_ERROR,
+  DELETE_ERROR,
 } from "../../utils/Const";
 
 function App() {
@@ -300,7 +303,8 @@ function App() {
           //Сохраняем в localStorage наши отфильтрованые фильмы
           localStorage.setItem("filteredMovies", JSON.stringify(filterResults));
         })
-        .catch((err) => console.log(err));
+        .catch((err) => setErrorMessage(SEARCH_ERROR));
+
     } else {
       // Когда фильмы в нашем localStorage берем их оттуда
       filterResults = JSON.parse(localStorage.getItem("movies")).filter(
@@ -401,6 +405,9 @@ function App() {
       setLikedMovies(savedShortMovies);
       if (savedShortMovies.length === 0) {
         setErrorMessage(NO_SHORTS);
+        setTimeout(() => {
+          setErrorMessage('')
+        }, 1000)
       }
     } else {
       const savedMovies = JSON.parse(localStorage.getItem("savedMovies"));
@@ -448,7 +455,7 @@ function App() {
         setLikedMovies(updatedLikedMovies);
         localStorage.setItem("savedMovies", JSON.stringify(updatedLikedMovies));
       })
-      .catch((err) => console.log(err));
+      .catch((err) => setErrorMessage(SAVE_ERROR));
   };
 
 
@@ -483,7 +490,7 @@ function App() {
         localStorage.setItem("savedMovies", JSON.stringify(updatedLikedMovies));
         setLikedMovies(updatedLikedMovies);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => setErrorMessage(DELETE_ERROR));
   };
 
   const resetErrorMessage = () => {

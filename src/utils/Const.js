@@ -7,3 +7,5 @@ export const SEARCH_WORD_ERROR =
   "Пожалуйста попробуйте уточнить запрос.";
   
 export const NO_SHORTS = 'У вас нет сохраненных короткометражек.'
+export const SAVE_ERROR = 'Не удалось сохранить. Пожалуйста попробуйте еще раз.'
+export const DELETE_ERROR = 'Не удалось удалить. Пожалуйста попробуйте еще раз.'
