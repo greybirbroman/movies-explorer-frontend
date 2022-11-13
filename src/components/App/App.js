@@ -178,19 +178,15 @@ function App() {
         if (res) {
           setIsLoggedIn(true);
           // Достаем из localStorage поисковый запрос и сохраняем в строку
-          if (localStorage.searchWord) {
             const lastSearchWord = JSON.parse(
-              localStorage.getItem("searchWord")
-            );
+              localStorage.getItem("searchWord"))
             // Записать в строку последний запрос
             setLastSearchWord(lastSearchWord);
             handleMoviesSearch(lastSearchWord);
-
             // Проверить состояние чекбокса короткометражек в localStorage
             if (localStorage.shortIsOn) {
               setShortMoviesSearch(true);
             }
-          }
         }
         //обнуляем сохраненный фильтр короткометражек
         localStorage.removeItem("shortIsOn");

@@ -35,7 +35,7 @@ function SearchForm({
             id="search-input"
             name="search-input"
             placeholder="Фильм"
-            value={searchWord || ""}
+            value={searchWord || ''}
             minLength="1"
             onChange={handleStringChange}
             className="search__input search__box"
