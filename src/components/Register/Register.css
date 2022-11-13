@@ -7,12 +7,14 @@
 }
 
 .register__fields {
-  margin: 0;
-  padding: 24px 0 0px;
   border: none;
+  margin: 0;
+  padding: 0;
+  padding-bottom: 16px;
+  height: 42px;
   display: flex;
   flex-direction: column;
-  box-sizing: border-box;
+  justify-content: space-between;
 }
 
 .register__label {
@@ -37,10 +39,6 @@
   font-size: 12px;
   line-height: 16px;
   font-weight: normal;
-}
-
-.register__input:focus {
-  border-bottom: 1px solid #2be080;
 }
 
 .register__input_error {

@@ -57,7 +57,7 @@ function Register({ onRegister, message, resetMessage }) {
         <Form title={"Добро пожаловать!"} onSubmit={handleSubmit}>
           <fieldset className="register__fields">
             <input
-              className="register__input"
+              className={`register__input ${errors.name ? 'register__input_error' : ''}`}
               required
               placeholder="Имя"
               name="name"
@@ -72,7 +72,7 @@ function Register({ onRegister, message, resetMessage }) {
             <input
               type="email"
               placeholder="E-mail"
-              className="register__input"
+              className={`register__input ${errors.email ? 'register__input_error' : ''}`}
               required
               pattern="^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$"
               name="email"
@@ -86,7 +86,7 @@ function Register({ onRegister, message, resetMessage }) {
             <input
               type="password"
               placeholder="Пароль"
-              className="register__input"
+              className={`register__input ${errors.password ? 'register__input_error' : ''}`}
               required
               minLength="8"
               name="password"

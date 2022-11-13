@@ -54,7 +54,7 @@ function Login({ onLogin, resetMessage, message }) {
         <fieldset className="login__fields">
           <input
             type="email"
-            className="login__input"
+            className={`login__input ${errors.email ? 'login__input_error' : ''}`}
             name="email"
             required
             placeholder="E-mail"
@@ -68,7 +68,7 @@ function Login({ onLogin, resetMessage, message }) {
         <fieldset className="login__fields">
           <input
             type="password"
-            className="login__input"
+            className={`login__input ${errors.password ? 'login__input_error' : ''}`}
             name="password"
             minLength="8"
             required

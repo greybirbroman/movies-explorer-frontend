@@ -23,11 +23,9 @@
   margin: 0;
   padding: 0;
   padding-bottom: 16px;
-  padding-top: 16px;
+  height: 42px;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  align-content: center;
   justify-content: space-between;
 }
 
@@ -53,6 +51,14 @@
   border-bottom: 1px solid #e8e8e8;
 }
 
+.profile__input_error {
+  border-bottom: 1px solid red;
+}
+
+.profile__input_sucsess {
+  border-bottom: 1px solid #2be080;
+}
+
 .profile__input::placeholder {
   font-size: 12px;
   line-height: 16px;
@@ -60,9 +66,9 @@
   text-align: left;
 }
 
-.profile__input:focus {
+/* .profile__input:focus {
   border-bottom: 1px solid #2be080;
-}
+} */
 
 .profile__error {
   color: #ee3465;
@@ -121,6 +127,7 @@
   display: none;
   max-width: 410px;
   text-align: left;
+  box-sizing: border-box;
 }
 
 .profile__info-message_active-success {
@@ -132,7 +139,7 @@
 
 .profile__info-message_error {
   display: flex;
-  margin: 0 auto;
+  
 }
 
 @media screen and (max-width: 500px) {

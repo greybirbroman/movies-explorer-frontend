@@ -15,10 +15,12 @@
 
 .login__fields {
   margin: 0;
-  padding: 24px 0 0;
+  padding: 0;
+  padding-bottom: 16px;
   border: none;
   display: flex;
   flex-direction: column;
+  height: 42px;
 }
 
 .login__label {
@@ -26,7 +28,6 @@
   font-size: 11px;
   line-height: 13px;
   color: #a0a0a0;
-  
 }
 
 .login__input {
@@ -44,11 +45,10 @@
   font-size: 12px;
   line-height: 16px;
   font-weight: normal;
-
 }
 
-.login__input:focus {
-  border-bottom: 1px solid #2BE080;
+.login__input_error {
+  border-bottom: 1px solid red;
 }
 
 .login__error {

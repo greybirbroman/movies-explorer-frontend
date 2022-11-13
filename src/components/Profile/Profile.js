@@ -61,40 +61,40 @@ function Profile({
             <input
               name="name"
               type="text"
-              className="profile__input"
+              className={`profile__input ${errors.name ? 'profile__input_error' : ''}`}
               value={values?.name ?? currentUser.name}
               onChange={handleChange}
               required
               disabled={inputDisabled}
               minLength="2"
             ></input>
-          </fieldset>
-
           <span
             className={`profile__info-message 
              ${!isValid ? `profile__info-message_error` : null}`}
           >
             {errors?.name}
           </span>
+          </fieldset>
+
           <fieldset className="profile__fields">
             <label className="profile__label">E-mail</label>
             <input
               name="email"
               type="email"
-              className="profile__input"
+              className={`profile__input ${errors.email ? 'profile__input_error' : ''}`}
               value={values?.email ?? currentUser.email}
               onChange={handleChange}
               required
               pattern="^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$"
               disabled={inputDisabled}
             ></input>
-          </fieldset>
           <span
             className={`profile__info-message 
              ${!isValid ? `profile__info-message_error` : null}`}
           >
             {errors?.email}
           </span>
+          </fieldset>
 
           <span
             className={`profile__info-message 
