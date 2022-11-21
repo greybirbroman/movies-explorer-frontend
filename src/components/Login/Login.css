@@ -41,6 +41,11 @@
   padding: 0 0 10px;
 }
 
+.login__input:focus {
+  box-shadow: 0 0 5px rgba(43, 224, 128, 1);
+  background-color: #fff;
+}
+
 .login__input::placeholder {
   font-size: 12px;
   line-height: 16px;

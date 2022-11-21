@@ -38,7 +38,7 @@ function Profile({
     setTimeout(() => {
       setInputDisabled((state) => !state);
       setIsChanged((state) => !state);
-    });
+    }, 2000);
     resetForm();
   }
 
@@ -61,7 +61,7 @@ function Profile({
             <input
               name="name"
               type="text"
-              className={`profile__input ${errors.name ? 'profile__input_error' : ''}`}
+              className={`profile__input ${errors.name &&'profile__input_error'}`}
               value={values?.name ?? currentUser.name}
               onChange={handleChange}
               required
@@ -81,7 +81,7 @@ function Profile({
             <input
               name="email"
               type="email"
-              className={`profile__input ${errors.email ? 'profile__input_error' : ''}`}
+              className={`profile__input ${errors.email && 'profile__input_error'}`}
               value={values?.email ?? currentUser.email}
               onChange={handleChange}
               required

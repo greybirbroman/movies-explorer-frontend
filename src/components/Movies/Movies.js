@@ -21,11 +21,11 @@ function Movies({
   moreResults,
   lastSearchWord,
   loggedIn,
+  isSavedMovies,
 }) {
   return (
     <>
       <Header loggedIn={loggedIn} />
-
       <main className="movies">
         <SearchForm
           onSearch={onSearch}
@@ -33,23 +33,29 @@ function Movies({
           isChecked={isChecked}
           lastSearchWord={lastSearchWord}
         />
-        <Loader isLoading={isLoading} />
-        <MoviesCardList
-          savedMovies={savedMovies}
-          movies={movies}
-          onLike={onLike}
-          onUnlike={onUnlike}
-          button="movie__btn_type_active"
-          isLoading={isLoading}
-          errorMessage={errorMessage}
-        />
-        {moreResults && !isLoading ? (
-          <ButtonElse onClick={showMoreResults} />
+        {isLoading ? (
+          <Loader isLoading={isLoading} />
         ) : (
-          <React.Fragment />
+          <>
+            <MoviesCardList
+              savedMovies={savedMovies}
+              movies={movies}
+              onLike={onLike}
+              onUnlike={onUnlike}
+              isLoading={isLoading}
+              errorMessage={errorMessage}
+              isMoviesPage={true}
+              isSavedMovies={isSavedMovies}
+            />
+            <>
+              {moreResults ? (
+                <ButtonElse onClick={showMoreResults} hidden={moreResults} />
+              ) : null}
+            </>
+          </>
         )}
       </main>
-      {!isLoading ? <Footer /> : null}
+      {!isLoading && <Footer />}
     </>
   );
 }

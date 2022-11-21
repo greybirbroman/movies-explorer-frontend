@@ -1,17 +1,30 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
-import { useLocation } from "react-router-dom";
 import "./MoviesCard.css";
+
+function DeleteButton({ onDelete, movieCard }) {
+  const handleDelete = () => {
+    onDelete(movieCard);
+  };
+
+  return (
+    <button
+      className="movie__btn movie__btn_type_delete"
+      onClick={handleDelete}
+      type="button"
+    />
+  );
+}
 
 function MoviesCard({
   movieCard,
-  savedMovies,
-  button,
   nameRU,
   trailer,
   image,
   onLike,
   onUnlike,
+  isMoviesPage,
+  isSavedMovies,
 }) {
   const getMovieDuration = (duration) => {
     const hours = Math.floor(duration / 60);
@@ -21,44 +34,13 @@ function MoviesCard({
     return hoursStr + minutesStr;
   };
 
-  const location = useLocation();
-
-  const [isLiked, setIsLiked] = useState(false);
-
-  const buttonClass = `movie__btn ${isLiked ? `${button}` : ""}`;
-
-  const unLike = () => {
-    setIsLiked(false);
+  const UnlikeOrDelete = () => {
     onUnlike(movieCard);
   };
 
   const like = () => {
-    setIsLiked(true);
     onLike(movieCard);
   };
-
-  const likeCheck = () => {
-    if (savedMovies) {
-      if (!isLiked) {
-        const someCard = savedMovies.some(
-          (likedMovie) => likedMovie.movieId === movieCard.id
-        );
-        if (someCard) {
-          setIsLiked(true);
-        } else {
-          setIsLiked(false);
-        }
-      }
-    }
-  };
-
-  function handleClick() {
-    isLiked ? unLike() : like();
-  }
-
-  useEffect(() => {
-    location.pathname === "/movies" ? likeCheck() : setIsLiked(true);
-  }, []);
 
   return (
     <li className="movie">
@@ -69,7 +51,13 @@ function MoviesCard({
             {getMovieDuration(movieCard.duration)}
           </span>
         </div>
-        <button type="button" className={buttonClass} onClick={handleClick} />
+        {isMoviesPage ?
+            (isSavedMovies(movieCard) ?
+               <button className='movie__btn movie__btn_type_active' onClick={UnlikeOrDelete} type="button" />
+               :
+               <button className='movie__btn' onClick={like} type='button' />)
+            :
+            <DeleteButton onDelete={UnlikeOrDelete} movieCard={movieCard}/>}
       </div>
       <div className="movie__image-box">
         <Link to={{ pathname: `${trailer}` }} target="_blank">

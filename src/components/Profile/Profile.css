@@ -66,9 +66,10 @@
   text-align: left;
 }
 
-/* .profile__input:focus {
-  border-bottom: 1px solid #2be080;
-} */
+.profile__input:focus {
+  box-shadow: 0 0 5px rgba(0,0,0,0.1);
+  background-color: #fff;
+}
 
 .profile__error {
   color: #ee3465;

@@ -2,7 +2,6 @@ import React from "react";
 import "./SavedMovies.css";
 import SearchForm from "../SearchForm/SearchForm";
 import MoviesCardList from "../MoviesCardList/MoviesCardList";
-import ButtonElse from "../ButtonElse/ButtonElse";
 import Footer from "../Footer/Footer";
 import Loader from "../Loader/Loader";
 import Header from "../Header/Header";
@@ -15,16 +14,14 @@ function SavedMovies({
   isLoading,
   onUnlike,
   savedMovies,
-  showMoreResults,
-  moreResults,
   loggedIn,
   shortMoviesOn,
   errorMessage,
+  isSavedMovies,
 }) {
   return (
     <>
       <Header loggedIn={loggedIn} />
-
       <main className="saved-movies">
         <SearchForm
           onSavedMoviesSearch={onSearch}
@@ -32,19 +29,18 @@ function SavedMovies({
           savedIsChecked={savedIsChecked}
           shortMoviesOn={shortMoviesOn}
         />
-        <Loader isLoading={isLoading} />
-        <MoviesCardList
-          savedMovies={savedMovies}
-          movies={movies}
-          button="movie__btn_type_delete"
-          onUnlike={onUnlike}
-          isLoading={isLoading}
-          errorMessage={errorMessage}
-        />
-        {moreResults ? (
-          <ButtonElse onClick={showMoreResults} aria-label="Показать ещё" />
+        {isLoading ? (
+          <Loader isLoading={isLoading} />
         ) : (
-          <React.Fragment />
+          <MoviesCardList
+            savedMovies={savedMovies}
+            movies={movies}
+            onUnlike={onUnlike}
+            isLoading={isLoading}
+            errorMessage={errorMessage}
+            isMoviesPage={false}
+            isSavedMovies={isSavedMovies}
+          />
         )}
       </main>
       {!isLoading ? <Footer /> : null}

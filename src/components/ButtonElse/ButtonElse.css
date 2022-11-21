@@ -17,6 +17,11 @@
   font-size: 12px;
   line-height: 14px;
   transition: 0.7s ease;
+  display: hidden;
+}
+
+.button__else_active {
+  display: block;
 }
 
 .button__else:hover {

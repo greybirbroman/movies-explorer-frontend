@@ -65,7 +65,7 @@ class MainApi {
     const token = localStorage.getItem("jwt");
     return {
       ...this._headers,
-      Authorization: `Bearer ${token}`,
+      "Authorization": `Bearer ${token}`,
     };
   }
 }
@@ -73,7 +73,7 @@ class MainApi {
 export const mainApi = new MainApi({
   baseUrl: BASE_URL,
   headers: {
-    Accept: "application/json",
+    "Accept": "application/json",
     "Content-Type": "application/json",
   },
 });
