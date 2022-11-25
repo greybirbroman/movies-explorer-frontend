@@ -166,47 +166,45 @@ function App() {
     console.log("Вышли из учетной записи");
   }
 
-  //загрузка профиля и фильмов при логине
-  useEffect(() => {
-    if (loggedIn) {
-      Promise.all([mainApi.getUserInfo(), mainApi.getMovies()])
-        .then(([user, movies]) => {
-          console.log("UserMovies", movies);
-          console.log("User", user);
-          setCurrentUser(user);
-          const userMovies = movies.filter((movie) => movie.owner === user._id);
-          localStorage.setItem("savedMovies", JSON.stringify(userMovies));
-          setLikedMovies(userMovies);
-        })
-        .catch((err) => {
-          setIsLoggedIn(false);
-          console.log(err);
-        })
-    }
-  }, [loggedIn]);
-
   //Проверка токена при загрузке страницы
   function tokenCheck() {
     const jwt = localStorage.getItem("jwt");
-    if (!jwt) return;
+    if (!jwt) handleLogout();
+
     auth
       .checkToken(jwt)
       .then((res) => {
         if (res) {
           setIsLoggedIn(true);
-          // Достаем из localStorage поисковый запрос
-          const lastSearchWord = JSON.parse(localStorage.getItem("searchWord"));
-          handleMoviesSearch(lastSearchWord);
         }
-        //обнуляем сохраненный фильтр короткометражек
-        localStorage.removeItem("shortIsOn");
-        localStorage.removeItem("savedShortsIsOn");
+        if (localStorage.searchWord) {
+          const lastSearchWord = JSON.parse(localStorage.getItem("searchWord"));
+          setLastSearchWord(lastSearchWord);
+          handleMoviesSearch(lastSearchWord);
+         }
+        
       })
       .catch((err) => {
-        console.log("Переданный токен некорректен!");
-        localStorage.removeItem('jwt');
+        console.log(err);
         setIsLoggedIn(false);
+        localStorage.removeItem("jwt");
+        history.push("/");
       });
+    if (loggedIn) {
+      Promise.all([mainApi.getUserInfo(), mainApi.getMovies()])
+        .then(([user, movies]) => {
+          console.log("User", user);
+          setCurrentUser(user);
+          console.log("UserMovies", movies);
+          localStorage.setItem("savedMovies", JSON.stringify(movies));
+          setLikedMovies(movies);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      setIsLoggedIn(false);
+    }
   }
 
   function handleRegister({ name, email, password }) {
@@ -274,6 +272,7 @@ function App() {
   // -----------------------------------------   Главный поиск фильмов ---------------------------------------- //
   function handleMoviesSearch(searchString) {
     localStorage.setItem("searchWord", JSON.stringify(searchString));
+    localStorage.setItem('shortIsOn', shortIsOn)
     let filterResults;
     if (!localStorage.movies) {
       //Обращение к API за получением ВСЕХ фильмов
@@ -291,7 +290,7 @@ function App() {
           });
           setLimit(windowSizeHandler);
           // Если чекбокс Короткометражек установлен
-          if (shortMoviesSearch) {
+          if (shortIsOn) {
             const shortMovies = filterResults.filter(
               (movie) => movie.duration <= SHORT_FILMS
             );
@@ -326,10 +325,9 @@ function App() {
       );
       setLimit(windowSizeHandler);
       setTimeout(() => setIsLoading(false), 500);
-      if (shortMoviesSearch) {
+      if (shortIsOn) {
         const shortMovies = filterResults.filter(
-          (movie) => movie.duration <= SHORT_FILMS
-        );
+          (movie) => movie.duration <= SHORT_FILMS);
         setFilteredMovies(shortMovies);
         console.log("Shorts", shortMovies);
         if (shortMovies.length === 0) {
@@ -366,7 +364,7 @@ function App() {
 
   // effects for /movies
   useEffect(() => {
-    const searchWord = JSON.parse(localStorage.getItem("searchWord"));
+    const searchWord = localStorage.getItem("searchWord");
     const shortMovies = filteredMovies.filter((movie) => movie.duration <= SHORT_FILMS);
     setLastSearchWord(searchWord);
     setShortIsOn(localStorage.getItem("shortIsOn") === "true");
@@ -482,7 +480,7 @@ function App() {
       .postNewMovie(cardMovie)
       .then((savedCard) => {
         console.log("сохранено", savedCard);
-        const updatedLikedMovies = [...likedMovies, savedCard];
+        const updatedLikedMovies = [savedCard, ...likedMovies];
         setLikedMovies(updatedLikedMovies);
         localStorage.setItem("savedMovies", JSON.stringify(updatedLikedMovies));
       })
@@ -510,7 +508,9 @@ function App() {
       .deleteMovie(deleteCard._id)
       .then(() => {
         console.log("удалено", deleteCard);
-        setLikedMovies(likedMovies.filter((currentCard) => currentCard._id !== deleteCard._id));
+        const updatedList = likedMovies.filter((currentCard) => currentCard._id !== deleteCard._id);
+        setLikedMovies(updatedList);
+        localStorage.setItem("savedMovies", JSON.stringify(updatedList));
       })
       .catch((err) => {
         console.log(err);

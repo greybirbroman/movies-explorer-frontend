@@ -57,8 +57,8 @@ function SearchForm({
             <FilterCheckbox
               isChecked={
                 location.pathname === "/movies"
-                  ? isChecked || false
-                  : savedIsChecked || false
+                  ? (isChecked ? true : false)
+                  : (savedIsChecked ? true : false)
               }
               onChange={onToggleSwitchClick}
               // isDisabled={!searchWord}
