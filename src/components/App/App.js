@@ -1,9 +1,4 @@
-import {
-  Redirect,
-  Route,
-  Switch,
-  useHistory,
-} from "react-router-dom";
+import { Redirect, Route, Switch, useHistory, useLocation } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import "./App.css";
 import * as auth from "../../utils/Auth";
@@ -21,8 +16,6 @@ import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 import {
   SEARCH_ERROR_NO_DATA,
   SEARCH_WORD_ERROR,
-  NO_SHORTS,
-  SEARCH_ERROR,
   SAVE_ERROR,
   DELETE_ERROR,
   SHORT_FILMS,
@@ -33,10 +26,12 @@ import {
   ADD_12,
   ADD_2,
   ADD_3,
+  NO_SAVED_FILMS,
 } from "../../utils/Const";
 
 function App() {
   const history = useHistory();
+  const location = useLocation();
 
   const [profileUpdateMessage, setProfileUpdateMessage] = useState("");
   const [profileErrorMessage, setProfileErrorMessage] = useState("");
@@ -50,21 +45,15 @@ function App() {
   const [shortIsOn, setShortIsOn] = useState(false); // Короткометражки для Movies
   const [shortMoviesSearch, setShortMoviesSearch] = useState(false);
   const [savedMoviesShortIsOn, setSavedMoviesShortIsOn] = useState(false);
-
   const [lastSearchWord, setLastSearchWord] = useState(""); // Поисковая строка
 
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [errorMessageSavedMovies, setErrorMessageSavedMovies] = useState("");
   const [moreResults, setMoreResults] = useState(false); // ELSE Button
 
   const [loggedIn, setIsLoggedIn] = useState(false); // AUTHORIZATION
   const [currentUser, setCurrentUser] = useState({}); // USER
-
-  // ------ TOKEN_CHECK
-  useEffect(() => {
-    tokenCheck();
-  }, [loggedIn]);
-
 
   // Установить количество карточек отображаемых на странице
   const [limit, setLimit] = useState(() => {
@@ -137,19 +126,19 @@ function App() {
           case 400:
             message = "Некорректное значение одного или нескольких полей";
             break;
-            case 401:
-              message = "Неверно указаны e-mail или пароль";
-              break;
-              default:
-                message = "Что-то пошло не так! Попробуйте ещё раз.";
-              }
-              localStorage.removeItem("jwt");
-              setCurrentUser(null)
-              setIsLoggedIn(false);
+          case 401:
+            message = "Неверно указаны e-mail или пароль";
+            break;
+          default:
+            message = "Что-то пошло не так! Попробуйте ещё раз.";
+        }
+        localStorage.removeItem("jwt");
+        setCurrentUser(null);
+        setIsLoggedIn(false);
       })
       .finally(() => {
         setErrorMessage(message);
-        setTimeout(() => resetErrorMessage(), 2000)
+        setTimeout(() => resetErrorMessage(), 2000);
       });
   }
 
@@ -166,30 +155,13 @@ function App() {
     console.log("Вышли из учетной записи");
   }
 
-  //Проверка токена при загрузке страницы
-  function tokenCheck() {
-    const jwt = localStorage.getItem("jwt");
-    if (!jwt) handleLogout();
+  function searchShortMovies(movies) {
+    return movies.filter((movie) => movie.duration <= SHORT_FILMS);
+  }
 
-    auth
-      .checkToken(jwt)
-      .then((res) => {
-        if (res) {
-          setIsLoggedIn(true);
-        }
-        if (localStorage.searchWord) {
-          const lastSearchWord = JSON.parse(localStorage.getItem("searchWord"));
-          setLastSearchWord(lastSearchWord);
-          handleMoviesSearch(lastSearchWord);
-         }
-        
-      })
-      .catch((err) => {
-        console.log(err);
-        setIsLoggedIn(false);
-        localStorage.removeItem("jwt");
-        history.push("/");
-      });
+  //Проверка токена при загрузке страницы
+
+  useEffect(() => {
     if (loggedIn) {
       Promise.all([mainApi.getUserInfo(), mainApi.getMovies()])
         .then(([user, movies]) => {
@@ -205,7 +177,31 @@ function App() {
     } else {
       setIsLoggedIn(false);
     }
-  }
+  }, [loggedIn]);
+
+  useEffect(() => {
+    const jwt = localStorage.getItem("jwt");
+    if (!jwt) handleLogout();
+    auth
+      .checkToken(jwt)
+      .then((res) => {
+        if (res) {
+          setIsLoggedIn(true);
+          // При перезагрузке страницы проверяем последний запрос и выполняем поиск
+          if (localStorage.searchWord) {
+            const lastSearchWord = JSON.parse(
+              localStorage.getItem("searchWord")
+            );
+            setLastSearchWord(lastSearchWord);
+            handleMoviesSearch(lastSearchWord);
+          }
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        handleLogout();
+      });
+  }, []);
 
   function handleRegister({ name, email, password }) {
     let message = "";
@@ -270,91 +266,91 @@ function App() {
   }
 
   // -----------------------------------------   Главный поиск фильмов ---------------------------------------- //
-  function handleMoviesSearch(searchString) {
-    localStorage.setItem("searchWord", JSON.stringify(searchString));
-    localStorage.setItem('shortIsOn', shortIsOn)
-    let filterResults;
+  function handleMoviesSearch(searchParams) {
+    //resetErrorMessage();
+    localStorage.setItem("searchWord", JSON.stringify(searchParams));
+    let filterResults = [];
+    let filterShorts = [];
+   
     if (!localStorage.movies) {
-      //Обращение к API за получением ВСЕХ фильмов
       moviesApi
         .getAllMovies()
         .then((res) => {
-          console.log("Все фильмы", res);
-          //Сохранение фильмов в localStorage для поиска по нему
           localStorage.setItem("movies", JSON.stringify(res));
           filterResults = res.filter((movie) => {
-            // Возвращаем совпадение по названию RU EN Director
-            return (movie.nameRU || movie.nameEN || movie.director)
+            return (movie.nameRU || movie.nameEN || movie.direcor)
               .toLowerCase()
-              .includes(searchString);
+              .includes(searchParams);
           });
           setLimit(windowSizeHandler);
-          // Если чекбокс Короткометражек установлен
-          if (shortIsOn) {
-            const shortMovies = filterResults.filter(
-              (movie) => movie.duration <= SHORT_FILMS
-            );
-            // Отдаем все фильмы короче 40мин
-            setFilteredMovies(shortMovies);
-            if (shortMovies.length === 0) {
+          //---------SHORTS_CHECK
+          if (localStorage.getItem("shortIsOn") === "true") {
+            filterShorts = searchShortMovies(filterResults);
+            setFilteredMovies(filterShorts);
+            if (filterShorts.length === 0) {
               setErrorMessage(SEARCH_ERROR_NO_DATA);
             }
           } else {
             setFilteredMovies(filterResults);
             if (filterResults.length === 0) {
-              //setErrorMessage(SEARCH_ERROR_NO_DATA);
+              setErrorMessage(SEARCH_ERROR_NO_DATA);
             }
           }
-          moviesRender(filterResults, limit);
-          //Сохраняем в localStorage наши отфильтрованые фильмы
-          localStorage.setItem("filteredMovies", JSON.stringify(filterResults));
+          if (shortIsOn) {
+            moviesRender(filterShorts, limit);
+          } else {
+            moviesRender(filterResults, limit);
+            localStorage.setItem(
+              "filteredMovies",
+              JSON.stringify(filterResults)
+            );
+          }
+          setLastSearchWord(JSON.parse(localStorage.getItem("searchWord")));
         })
-        .catch((err) => setErrorMessage(SEARCH_ERROR))
-        .finally(() => {
-          setTimeout(() => setIsLoading(false), 1000);
-        });
+        .catch((err) => console.log(err));
     } else {
       setIsLoading(true);
-      // Когда фильмы в нашем localStorage берем их оттуда
+      //---------- берем фильмы из localStorage
       filterResults = JSON.parse(localStorage.getItem("movies")).filter(
         (movie) => {
-          return (movie.nameRU || movie.nameEN || movie.director)
+          return (movie.nameRU || movie.nameEN || movie.direcor)
             .toLowerCase()
-            .includes(searchString);
+            .includes(searchParams);
         }
       );
       setLimit(windowSizeHandler);
       setTimeout(() => setIsLoading(false), 500);
-      if (shortIsOn) {
-        const shortMovies = filterResults.filter(
-          (movie) => movie.duration <= SHORT_FILMS);
-        setFilteredMovies(shortMovies);
-        console.log("Shorts", shortMovies);
-        if (shortMovies.length === 0) {
-          setErrorMessage(SEARCH_WORD_ERROR);
+      if (localStorage.getItem("shortIsOn") === "true") {
+        filterShorts = searchShortMovies(filterResults);
+        setFilteredMovies(filterShorts);
+        if (filterShorts.length === 0) {
+          setErrorMessage(SEARCH_ERROR_NO_DATA);
         }
       } else {
         setFilteredMovies(filterResults);
-        console.log("FilteredMovies", filterResults);
         if (filterResults.length === 0) {
           setErrorMessage(SEARCH_ERROR_NO_DATA);
-          setTimeout(() => resetErrorMessage(), 2000);
         }
       }
-      moviesRender(filterResults, limit);
-      localStorage.setItem("filteredMovies", JSON.stringify(filterResults));
+      if (shortIsOn) {
+        moviesRender(filterShorts, limit);
+      } else {
+        moviesRender(filterResults, limit);
+        localStorage.setItem("filteredMovies", JSON.stringify(filterResults));
+      }
+      setLastSearchWord(JSON.parse(localStorage.getItem("searchWord")));
     }
   }
 
   //отрисовка фильмов с условиием короткометражек
   const shortMoviesSwitchClick = () => {
-    const shortMovies = filteredMovies.filter((movie) => movie.duration <= 40);
+    const filteredMovies = JSON.parse(localStorage.getItem("filteredMovies"));
+    const shortMovies = searchShortMovies(filteredMovies);
     setShortIsOn(!shortIsOn);
     if (!shortIsOn) {
       moviesRender(shortMovies, limit);
       if (filteredMovies.length === 0) {
         setErrorMessage(SEARCH_ERROR_NO_DATA);
-        setTimeout(() => resetErrorMessage(), 2000);
       }
     } else {
       moviesRender(filteredMovies, limit);
@@ -362,28 +358,27 @@ function App() {
     localStorage.setItem("shortIsOn", !shortIsOn);
   };
 
-  // effects for /movies
+  //effects for /movies
   useEffect(() => {
-    const searchWord = localStorage.getItem("searchWord");
-    const shortMovies = filteredMovies.filter((movie) => movie.duration <= SHORT_FILMS);
-    setLastSearchWord(searchWord);
+    //const movies = JSON.parse(localStorage.getItem("filteredMovies"));
+    const shortMovies = searchShortMovies(filteredMovies);
     setShortIsOn(localStorage.getItem("shortIsOn") === "true");
-    if (localStorage.getItem("filteredMovies")) {
-      const allFilteredMovies = JSON.parse(
-        localStorage.getItem("filteredMovies")
-      );
-      moviesRender(allFilteredMovies, limit);
+    if (filteredMovies) {
+      moviesRender(filteredMovies, limit);
       if (localStorage.getItem("shortIsOn") === "true") {
         moviesRender(shortMovies, limit);
       } else {
-        moviesRender(filteredMovies);
+        moviesRender(filteredMovies, limit);
       }
     }
   }, []);
 
   // -----------------------------------------   Главный поиск Сохраненных Фильмов ---------------------------------------- //
   const handleSavedMoviesSearch = (searchString) => {
+    let filterShorts = [];
+    let savedMovies = [];
     setIsLoading(true);
+    savedMovies = JSON.parse(localStorage.getItem("savedMovies"));
     const filterResults = JSON.parse(
       localStorage.getItem("savedMovies")
     ).filter((movie) => {
@@ -391,54 +386,57 @@ function App() {
         .toLowerCase()
         .includes(searchString);
     });
-    setAllLikedMovies(filterResults);
-    if (filterResults.length === 0) {
-      setErrorMessage(SEARCH_ERROR_NO_DATA);
-      setTimeout(() => resetErrorMessage(), 2000);
+    if (localStorage.getItem("savedShortsIsOn") === "true") {
+      filterShorts = searchShortMovies(filterResults);
+      setAllLikedMovies(filterShorts);
+      if (filterShorts.length === 0) {
+        setErrorMessageSavedMovies(SEARCH_ERROR_NO_DATA);
+      }
+    } 
+    if(searchString === undefined) {
+      setAllLikedMovies(savedMovies)
+    } 
+    if (savedMoviesShortIsOn) {
+      setAllLikedMovies(filterShorts);
+    } else {
+      setAllLikedMovies(filterResults);
+      if (filterResults.length === 0) {
+        setErrorMessageSavedMovies(SEARCH_WORD_ERROR);
+      }
     }
+      //localStorage.setItem("savedMovies", JSON.stringify(filterResults));
     setTimeout(() => setIsLoading(false), 500);
   };
 
   //отрисовка сохраненных фильмов с фильтром короткометражек
-  const handleChangeCheckboxSavedMovies = () => {
+  const shortSavedMoviesSwitchClick = () => {
+    const likedMovies = JSON.parse(localStorage.getItem("savedMovies"));
+    setSavedMoviesShortIsOn(!savedMoviesShortIsOn);
     if (!savedMoviesShortIsOn) {
-      setSavedMoviesShortIsOn(true);
-      localStorage.setItem("savedShortsIsOn", true);
-      const savedShortMovies = likedMovies.filter(
-        (movie) => movie.duration <= SHORT_FILMS
-      );
-      console.log('savedShorts')
+      //localStorage.setItem("savedShortsIsOn", true);
+      const savedShortMovies = searchShortMovies(allLikedMovies);
       setAllLikedMovies(savedShortMovies);
       if (savedShortMovies.length === 0) {
-        setErrorMessage(NO_SHORTS);
-        setTimeout(() => resetErrorMessage(), 2000);
+        setErrorMessageSavedMovies(SEARCH_ERROR_NO_DATA);
       }
     } else {
-      setSavedMoviesShortIsOn(false);
-      localStorage.setItem("savedShortsIsOn", false);
-      if (likedMovies.length === 0) {
-        setErrorMessage(SEARCH_ERROR_NO_DATA);
-      }
-      resetErrorMessage();
+      //setSavedMoviesShortIsOn(false);
+      //localStorage.setItem("savedShortsIsOn", false);
       setAllLikedMovies(likedMovies);
+      if (likedMovies.length === 0) {
+        setErrorMessageSavedMovies(SEARCH_ERROR_NO_DATA);
+      }
     }
+    localStorage.setItem("savedShortsIsOn", !savedMoviesShortIsOn);
   };
-
-  useEffect(() => {
-    if (likedMovies.length > 0) {
-      resetErrorMessage();
-    } else {
-      setErrorMessage(SEARCH_ERROR_NO_DATA);
-    }
-  }, [likedMovies]);
 
   // effects for /saved-movies
   useEffect(() => {
+    //const likedMovies = JSON.parse(localStorage.getItem("savedMovies"));
+    const savedShortMovies = searchShortMovies(likedMovies);
+    setAllLikedMovies(likedMovies);
     if (localStorage.getItem("savedShortsIsOn") === "true") {
       setSavedMoviesShortIsOn(true);
-      const savedShortMovies = likedMovies.filter(
-        (movie) => movie.duration <= SHORT_FILMS
-      );
       setAllLikedMovies(savedShortMovies);
     } else {
       setSavedMoviesShortIsOn(false);
@@ -458,6 +456,15 @@ function App() {
       }
     }
   };
+
+  useEffect(() => {
+    if(likedMovies.length > 0) {
+      setAllLikedMovies(likedMovies)
+      setSavedMoviesShortIsOn(false);
+    } else {
+      setErrorMessageSavedMovies(NO_SAVED_FILMS)
+    }
+  }, [location.pathname === '/saved-movies'])
 
   // Правила для кнопки ELSE
   const showMore = () => {
@@ -487,40 +494,44 @@ function App() {
       .catch((err) => {
         console.log(err);
         setErrorMessage(SAVE_ERROR);
-        setTimeout(() => resetErrorMessage(), 1000)
+        setTimeout(() => resetErrorMessage(), 1000);
       });
   };
 
   const isSavedMovies = (movie) => {
-    return likedMovies.some((card) => card.movieId === movie.id && card.owner === currentUser._id
+    return likedMovies.some(
+      (card) => card.movieId === movie.id && card.owner === currentUser._id
     );
   };
 
-// Удаляем фильм из стейта и с сервера
+  // Удаляем фильм из стейта и с сервера
   function deleteMovie(movie) {
     const deleteCard = likedMovies.find(
       (card) =>
-      card.movieId === (movie.id || movie.movieId) &&
-      card.owner === currentUser._id
+        card.movieId === (movie.id || movie.movieId) &&
+        card.owner === currentUser._id
     );
     if (!deleteCard) return;
     mainApi
       .deleteMovie(deleteCard._id)
       .then(() => {
         console.log("удалено", deleteCard);
-        const updatedList = likedMovies.filter((currentCard) => currentCard._id !== deleteCard._id);
+        const updatedList = likedMovies.filter(
+          (currentCard) => currentCard._id !== deleteCard._id
+        );
         setLikedMovies(updatedList);
         localStorage.setItem("savedMovies", JSON.stringify(updatedList));
       })
       .catch((err) => {
         console.log(err);
         setErrorMessage(DELETE_ERROR);
-        setTimeout(() => resetErrorMessage(), 1000)
+        setTimeout(() => resetErrorMessage(), 1000);
       });
   }
 
   const resetErrorMessage = () => {
     setErrorMessage("");
+    setErrorMessageSavedMovies("");
   };
 
   return (
@@ -559,9 +570,9 @@ function App() {
             loggedIn={loggedIn}
             savedMovies={likedMovies}
             shortMoviesOn={shortMoviesSearch}
-            onToggleSwitchClick={handleChangeCheckboxSavedMovies}
+            onToggleSwitchClick={shortSavedMoviesSwitchClick}
             savedIsChecked={savedMoviesShortIsOn}
-            errorMessage={errorMessage}
+            errorMessage={errorMessageSavedMovies}
             isSavedMovies={isSavedMovies}
           />
           <ProtectedRoute
@@ -600,11 +611,7 @@ function App() {
             )}
           </Route>
           <Route path="*">
-            {!loggedIn ? (
-              <NotFound history={history} />
-            ) : (
-              <Redirect to="/movies" />
-            )}
+            <NotFound history={history} />
           </Route>
         </Switch>
       </div>
