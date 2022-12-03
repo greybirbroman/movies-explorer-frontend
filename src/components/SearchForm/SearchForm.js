@@ -3,6 +3,7 @@ import FilterCheckbox from "../FilterCheckbox/FilterCheckbox";
 import { useState } from "react";
 import { useLocation } from "react-router-dom";
 
+
 function SearchForm({
   onSearch,
   lastSearchWord,
@@ -12,8 +13,8 @@ function SearchForm({
   savedIsChecked,
 }) {
   const [searchWord, setSearchWord] = useState(lastSearchWord);
-  const location = useLocation();
 
+  const location = useLocation();
 
   const handleStringChange = (evt) => {
     setSearchWord(evt.target.value);
@@ -28,15 +29,19 @@ function SearchForm({
 
   return (
     <section className="search">
-      <form name="search-form" className="search__form" onSubmit={handleSearch}>
+      <form
+        name="search-form"
+        className="search__form"
+        onSubmit={handleSearch}
+        noValidate
+      >
         <fieldset className="search__input-box">
           <input
             type="text"
             id="search-input"
             name="search-input"
             placeholder="Фильм"
-            value={searchWord || ''}
-            minLength="1"
+            value={searchWord || ""}
             onChange={handleStringChange}
             className="search__input search__box"
             required

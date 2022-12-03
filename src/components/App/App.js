@@ -1,4 +1,10 @@
-import { Redirect, Route, Switch, useHistory, useLocation } from "react-router-dom";
+import {
+  Redirect,
+  Route,
+  Switch,
+  useHistory,
+  useLocation,
+} from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import "./App.css";
 import * as auth from "../../utils/Auth";
@@ -271,7 +277,7 @@ function App() {
     localStorage.setItem("searchWord", JSON.stringify(searchParams));
     let filterResults = [];
     let filterShorts = [];
-   
+
     if (!localStorage.movies) {
       moviesApi
         .getAllMovies()
@@ -392,10 +398,10 @@ function App() {
       if (filterShorts.length === 0) {
         setErrorMessageSavedMovies(SEARCH_ERROR_NO_DATA);
       }
-    } 
-    if(searchString === undefined) {
-      setAllLikedMovies(savedMovies)
-    } 
+    }
+    if (searchString === undefined) {
+      setAllLikedMovies(savedMovies);
+    }
     if (savedMoviesShortIsOn) {
       setAllLikedMovies(filterShorts);
     } else {
@@ -404,7 +410,7 @@ function App() {
         setErrorMessageSavedMovies(SEARCH_WORD_ERROR);
       }
     }
-      //localStorage.setItem("savedMovies", JSON.stringify(filterResults));
+    //localStorage.setItem("savedMovies", JSON.stringify(filterResults));
     setTimeout(() => setIsLoading(false), 500);
   };
 
@@ -416,7 +422,7 @@ function App() {
       //localStorage.setItem("savedShortsIsOn", true);
       const savedShortMovies = searchShortMovies(allLikedMovies);
       setAllLikedMovies(savedShortMovies);
-      if (savedShortMovies.length === 0) {
+      if (!savedShortMovies) {
         setErrorMessageSavedMovies(SEARCH_ERROR_NO_DATA);
       }
     } else {
@@ -457,14 +463,23 @@ function App() {
     }
   };
 
+  // useEffect(() => {
+  //   if(likedMovies.length > 0) {
+  //     setAllLikedMovies(likedMovies)
+  //     setSavedMoviesShortIsOn(false);
+  //   } else {
+  //     setErrorMessageSavedMovies(NO_SAVED_FILMS)
+  //   }
+  // }, [location.pathname === '/saved-movies'])
+
   useEffect(() => {
-    if(likedMovies.length > 0) {
-      setAllLikedMovies(likedMovies)
-      setSavedMoviesShortIsOn(false);
-    } else {
-      setErrorMessageSavedMovies(NO_SAVED_FILMS)
+    if (location.pathname === "/saved-movies") {
+      if (likedMovies.length !== 0) {
+        setAllLikedMovies(likedMovies);
+        setSavedMoviesShortIsOn(false);
+      }
     }
-  }, [location.pathname === '/saved-movies'])
+  }, [location]);
 
   // Правила для кнопки ELSE
   const showMore = () => {

@@ -12,7 +12,7 @@ function NotFound({ history }) {
       <p className="page-not-found__subtitle page-not-found-container">
         Страница не найдена
       </p>
-      <button type='button' className="page-not-found__btn" onClick={handleClick}>
+      <button  type='button' className="page-not-found__btn" onClick={handleClick}>
         Назад
       </button>
     </section>

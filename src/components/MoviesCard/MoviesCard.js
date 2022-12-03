@@ -12,6 +12,7 @@ function DeleteButton({ onDelete, movieCard }) {
       className="movie__btn movie__btn_type_delete"
       onClick={handleDelete}
       type="button"
+      title="Убрать из Сохраненных"
     />
   );
 }
@@ -51,24 +52,35 @@ function MoviesCard({
             {getMovieDuration(movieCard.duration)}
           </span>
         </div>
-        {isMoviesPage ?
-            (isSavedMovies(movieCard) ?
-               <button className='movie__btn movie__btn_type_active' onClick={UnlikeOrDelete} type="button" />
-               :
-               <button className='movie__btn' onClick={like} type='button' />)
-            :
-            <DeleteButton onDelete={UnlikeOrDelete} movieCard={movieCard}/>}
+        {isMoviesPage ? (
+          isSavedMovies(movieCard) ? (
+            <button
+              className="movie__btn movie__btn_type_active"
+              onClick={UnlikeOrDelete}
+              type="button"
+              title="Убрать из Сохраненных"
+            />
+          ) : (
+            <button
+              className="movie__btn"
+              onClick={like}
+              type="button"
+              title="Добавить в Сохраненные"
+            />
+          )
+        ) : (
+          <DeleteButton onDelete={UnlikeOrDelete} movieCard={movieCard} />
+        )}
       </div>
-      <div className="movie__image-box">
-        <Link to={{ pathname: `${trailer}` }} target="_blank">
-          <img
-            src={image}
-            className="movie__image"
-            alt={nameRU}
-            title="Посмотреть трейлер"
-          />
-        </Link>
-      </div>
+      <Link
+        className="movie__link"
+        to={{ pathname: `${trailer}` }}
+        target="_blank"
+        rel="noreferrer"
+        title="Посмотреть трейлер"
+      >
+        <img src={image} className="movie__image" alt={nameRU} />
+      </Link>
     </li>
   );
 }
