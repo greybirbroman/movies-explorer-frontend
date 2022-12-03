@@ -1,8 +1,6 @@
-import './SectionHeader.css';
+import "./SectionHeader.css";
 
-function SectionHeader ({ children }) {
-    return (
-        <h2 className="sectionHeader">{children}</h2>
-    )
+function SectionHeader({ children }) {
+  return <h2 className="sectionHeader">{children}</h2>;
 }
 export default SectionHeader;

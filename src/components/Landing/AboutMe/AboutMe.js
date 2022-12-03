@@ -1,5 +1,5 @@
 import "./AboutMe.css";
-import photo from "../../../images/avatar.jpeg";
+import photo from "../../../images/avatar.jpg";
 import SectionHeader from "../../SectionHeader/SectionHeader";
 import Portfolio from "../Portfolio/Portfolio";
 
@@ -13,10 +13,19 @@ function AboutMe() {
           <p className="aboutme__job">Фронтенд-разработчик, 31 год</p>
 
           <p className="aboutme__description">
-            Привет! Я живу в Санкт-Петербурге, закончил юридический факультет
-            СПБГЭУ в 2014 году. Теперь я очень хочу сменить сферу деятельности,
-            поэтому пошел учиться в Yandex. Я люблю и умею готовить интересные рецепты,
-            увлекаюсь "спешалти" кофе, бегом и автомобилями. Вместо попугая будет фото.
+            Привет! Я&nbsp;живу в&nbsp;Санкт-Петербурге, закончил юридический
+            факультет СПБГЭУ в&nbsp;2014&nbsp;году. Люблю и&nbsp;умею готовить
+            интересные рецепты, много знаю про &laquo;спешалти&raquo; кофе,
+            нравится и&nbsp;хочется бегать больше, люблю автомобили. Сегодня
+            я&nbsp;очень хочу стать программистом, поэтому стал учиться
+            и&nbsp;прошел программу &laquo;WEB-разработчик&raquo;
+            в&nbsp;Yandex.Практикум. Сфера IT&nbsp;всегда привлекала меня тем,
+            что она может вступать в симбиоз с&nbsp;любым бизнессом
+            и&nbsp;делать его лучше, влиять на&nbsp;качество конечного продукта
+            и&nbsp;жизни людей. Я&nbsp;очень мотивирован и&nbsp;готов к
+            постояному изучению нового. Хочу приносить пользу, решать разные
+            задачи, заниматься реальными проектами и&nbsp;состояться как
+            специалист в&nbsp;этой области.
           </p>
 
           <ul className="aboutme__list">
@@ -32,7 +41,12 @@ function AboutMe() {
             </li>
           </ul>
         </div>
-        <img className="aboutme__photo" src={photo} alt="Моя фотография" />
+        <img
+          className="aboutme__photo"
+          src={photo}
+          alt="Моя фотография"
+          title="Это я"
+        />
       </div>
       <Portfolio />
     </section>

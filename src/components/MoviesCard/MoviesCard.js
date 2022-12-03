@@ -1,100 +1,87 @@
+import React from "react";
+import { Link } from "react-router-dom";
 import "./MoviesCard.css";
-import movie_pic from "../../images/movie-pic.png";
 
-function MoviesCard() {
+function DeleteButton({ onDelete, movieCard }) {
+  const handleDelete = () => {
+    onDelete(movieCard);
+  };
+
   return (
-    <>
-      <li className="movie">
-        <div className="movie__container">
-          <div className="movie__header">
-            <h3 className="movie__title">33 слова о дизайне</h3>
-            <span className="movie__direction">1ч 47м</span>
-          </div>
-          <button className="movie__btn"></button>
-        </div>
+    <button
+      className="movie__btn movie__btn_type_delete"
+      onClick={handleDelete}
+      type="button"
+      title="Убрать из Сохраненных"
+    />
+  );
+}
 
-        <img
-          src={movie_pic}
-          className="movie__image"
-          alt="Картинка из фильма"
-        />
-      </li>
-      <li className="movie">
-        <div className="movie__container">
-          <div className="movie__header">
-            <h3 className="movie__title">33 слова о дизайне</h3>
-            <span className="movie__direction">1ч 47м</span>
-          </div>
-          <button className="movie__btn"></button>
-        </div>
+function MoviesCard({
+  movieCard,
+  nameRU,
+  trailer,
+  image,
+  onLike,
+  onUnlike,
+  isMoviesPage,
+  isSavedMovies,
+}) {
+  const getMovieDuration = (duration) => {
+    const hours = Math.floor(duration / 60);
+    const hoursStr = hours > 0 ? `${hours}ч ` : "";
+    const minutes = duration - hours * 60;
+    const minutesStr = minutes > 0 ? `${minutes}м` : "";
+    return hoursStr + minutesStr;
+  };
 
-        <img
-          src={movie_pic}
-          className="movie__image"
-          alt="Картинка из фильма"
-        />
-      </li>
-      <li className="movie">
-        <div className="movie__container">
-          <div className="movie__header">
-            <h3 className="movie__title">33 слова о дизайне</h3>
-            <span className="movie__direction">1ч 47м</span>
-          </div>
-          <button className="movie__btn"></button>
-        </div>
+  const UnlikeOrDelete = () => {
+    onUnlike(movieCard);
+  };
 
-        <img
-          src={movie_pic}
-          className="movie__image"
-          alt="Картинка из фильма"
-        />
-      </li>
-      <li className="movie">
-        <div className="movie__container">
-          <div className="movie__header">
-            <h3 className="movie__title">33 слова о дизайне</h3>
-            <span className="movie__direction">1ч 47м</span>
-          </div>
-          <button className="movie__btn"></button>
-        </div>
+  const like = () => {
+    onLike(movieCard);
+  };
 
-        <img
-          src={movie_pic}
-          className="movie__image"
-          alt="Картинка из фильма"
-        />
-      </li>
-      <li className="movie">
-        <div className="movie__container">
-          <div className="movie__header">
-            <h3 className="movie__title">33 слова о дизайне</h3>
-            <span className="movie__direction">1ч 47м</span>
-          </div>
-          <button className="movie__btn"></button>
+  return (
+    <li className="movie">
+      <div className="movie__container">
+        <div className="movie__header">
+          <h3 className="movie__title">{nameRU}</h3>
+          <span className="movie__direction">
+            {getMovieDuration(movieCard.duration)}
+          </span>
         </div>
-
-        <img
-          src={movie_pic}
-          className="movie__image"
-          alt="Картинка из фильма"
-        />
-      </li>
-      <li className="movie">
-        <div className="movie__container">
-          <div className="movie__header">
-            <h3 className="movie__title">33 слова о дизайне</h3>
-            <span className="movie__direction">1ч 47м</span>
-          </div>
-          <button className="movie__btn"></button>
-        </div>
-
-        <img
-          src={movie_pic}
-          className="movie__image"
-          alt="Картинка из фильма"
-        />
-      </li>
-    </>
+        {isMoviesPage ? (
+          isSavedMovies(movieCard) ? (
+            <button
+              className="movie__btn movie__btn_type_active"
+              onClick={UnlikeOrDelete}
+              type="button"
+              title="Убрать из Сохраненных"
+            />
+          ) : (
+            <button
+              className="movie__btn"
+              onClick={like}
+              type="button"
+              title="Добавить в Сохраненные"
+            />
+          )
+        ) : (
+          <DeleteButton onDelete={UnlikeOrDelete} movieCard={movieCard} />
+        )}
+      </div>
+      <Link
+        className="movie__link"
+        to={{ pathname: `${trailer}` }}
+        target="_blank"
+        rel="noreferrer"
+        title="Посмотреть трейлер"
+      >
+        <img src={image} className="movie__image" alt={nameRU} />
+      </Link>
+    </li>
   );
 }
 

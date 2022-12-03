@@ -17,11 +17,16 @@
   font-size: 12px;
   line-height: 14px;
   transition: 0.7s ease;
+  display: hidden;
+}
+
+.button__else_active {
+  display: block;
 }
 
 .button__else:hover {
   cursor: pointer;
-  background-color: #2BE080;
+  background-color: #2be080;
 }
 
 @media screen and (max-width: 400px) {

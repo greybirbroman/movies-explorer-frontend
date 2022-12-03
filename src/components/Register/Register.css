@@ -1,29 +1,23 @@
 .register {
   margin: 0 auto;
   padding: 70px 0;
-  max-width: 400px;
+  width: 400px;
   display: flex;
   flex-direction: column;
-}
-
-.register__header {
-  align-self: flex-start;
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
 }
 
 .register__fields {
+  border: none;
   margin: 0;
   padding: 0;
-  border: none;
+  padding-bottom: 16px;
+  height: 42px;
   display: flex;
   flex-direction: column;
-  align-items: left;
+  justify-content: space-between;
 }
 
 .register__label {
-  padding-bottom: 5px;
   font-weight: 500;
   font-size: 11px;
   line-height: 13px;
@@ -31,29 +25,42 @@
 }
 
 .register__input {
-  padding: 0;
-  padding-bottom: 10px;
-  height: 17px;
-  outline: none;
-  border: none;
-  font-weight: 500;
   font-size: 14px;
   line-height: 17px;
+  border: none;
+  outline: none;
+  border-bottom: 1px solid #e8e8e8;
+  background-color: #fff;
+  width: 100%;
+  padding: 0 0 10px;
 }
 
-.register__input-line {
-  max-width: 410px;
-  height: 1px;
-  background-color: #e8e8e8;
-  margin-bottom: 24px;
+.register__input:focus {
+  box-shadow: 0 0 5px rgba(43, 224, 128, 1);
+  background-color: #fff;
 }
 
-@media screen and (max-width: 400px) {
-  .register {
-    padding: 50px 0 30px;
-  }
+.register__input::placeholder {
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: normal;
+}
 
-  .register__header {
-    align-self: center;
-  }
+.register__input_error {
+  border-bottom: 1px solid red;
+}
+
+.register__error {
+  font-size: 10px;
+  font-weight: 400;
+  line-height: 13px;
+  color: red;
+  display: none;
+  flex-direction: column;
+  width: 100%;
+  padding-top: 5px;
+}
+
+.register__error_active {
+  display: flex;
 }

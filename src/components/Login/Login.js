@@ -1,32 +1,93 @@
+import React, { useState } from "react";
 import "./Login.css";
-import Logo from "../Logo/Logo";
 import Form from "../Form/Form";
+import Logo from "../Logo/Logo";
 import SubmitGroup from "../SubmitGroup/SubmitGroup";
+import { useFormWithValidation } from "../../hooks/useFormWithValidation";
+import { useEffect } from "react";
 
-function Login() {
+function Login({ onLogin, resetMessage, message }) {
+  const [errorMessage, setErrorMessage] = useState("");
+  const { values, isValid, handleChange, errors, resetForm } =
+    useFormWithValidation({
+      email: "",
+      password: "",
+    });
+
+  // Обнулить ошибку
+  useEffect(() => {
+    resetMessage();
+  }, [values]);
+
+  // Установить сообщение об ошибке
+  useEffect(() => {
+    setErrorMessage(message);
+  }, [message]);
+
+  const spanErrorClass = `login__error ${
+    !isValid ? "login__error_active" : ""
+  }`;
+
+  const resetInputs = () => {
+    resetForm({
+      email: "",
+      password: "",
+    });
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    if (isValid) {
+      // Прокинуть данные из Инпутов для обращения к API
+      onLogin({
+        email: values.email,
+        password: values.password,
+        resetInputs,
+      });
+    }
+  };
+
   return (
     <section className="login">
-      <header className="login__header">
-        <Logo />
-      </header>
-      <Form title={"Рады видеть!"} name={"regForm"}>
+      <Logo />
+      <Form title={"Рады видеть!"} onSubmit={handleSubmit}>
         <fieldset className="login__fields">
-          <label className="login__label">E-mail</label>
-          <input type="email" className="login__input"></input>
+          <input
+            type="email"
+            className={`login__input ${errors.email ? 'login__input_error' : ''}`}
+            name="email"
+            required
+            placeholder="E-mail"
+            pattern="^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$"
+            onChange={handleChange}
+            value={values.email || ""}
+          ></input>
+          <span className={spanErrorClass}>{errors?.email}</span>
         </fieldset>
-        <div className="login__input-line"></div>
+
         <fieldset className="login__fields">
-          <label className="login__label">Пароль</label>
-          <input type="password" className="login__input"></input>
+          <input
+            type="password"
+            className={`login__input ${errors.password ? 'login__input_error' : ''}`}
+            name="password"
+            minLength="8"
+            required
+            placeholder="Пароль"
+            onChange={handleChange}
+            value={values.password || ""}
+          ></input>
+          <span className={spanErrorClass}>{errors?.password}</span>
         </fieldset>
-        <div className="login__input-line"></div>
-      <SubmitGroup
-        submitName={"Войти"}
-        linkName={"Регистрация"}
-        linkDestination={"/signup"}
-      >
-        Еще не зарегестированы?&ensp;
-      </SubmitGroup>
+
+        <SubmitGroup
+          submitName={"Войти"}
+          linkName={"Регистрация"}
+          linkDestination={"/signup"}
+          submitDisabled={!isValid}
+          errorMessage={errorMessage}
+        >
+          Еще не зарегестированы?&ensp;
+        </SubmitGroup>
       </Form>
     </section>
   );

@@ -1,6 +1,12 @@
+import React from "react";
 import "./Loader.css";
 
-function Loader() {
-  return <div className="loader" />;
-}
+const Loader = (props) => {
+  return (
+    <>
+      <div className={`${props.isLoading ? "loader" : null}`}></div>
+    </>
+  );
+};
+
 export default Loader;

@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import PopupNavigation from "../PopupNavigation/PopupNavigation";
 import "./Navigation.css";
 
 function Navigation() {
+  const location = useLocation();
   const [isPopupVisible, setIsPopupVisible] = useState(false);
 
   const handleClose = () => {
@@ -33,16 +34,20 @@ function Navigation() {
           Сохранённые фильмы
         </NavLink>
       </div>
+      {location.pathname !== "/profile" ? (
+        <NavLink
+          to="/profile"
+          activeClassName="menu__link_active"
+          className="menu__link menu__link_profile"
+        >
+          Аккаунт
+        </NavLink>
+      ) : (
+        <React.Fragment />
+      )}
 
-      <NavLink
-        to="/profile"
-        activeClassName="menu__link_active"
-        className="menu__link menu__link_profile"
-      >
-        Аккаунт
-      </NavLink>
       <button className="menu__button" onClick={handleClick} />
-      {isPopupVisible && <PopupNavigation handleClose={handleClose}/>}
+      {isPopupVisible && <PopupNavigation handleClose={handleClose} />}
     </nav>
   );
 }

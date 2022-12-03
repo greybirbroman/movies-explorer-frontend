@@ -1,19 +1,39 @@
-.movies {
-  margin: 0 auto;
-  font-family: "Inter";
-}
-
 .movies__list {
   list-style: none;
-  overflow: hidden;
-  width: 100%;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  justify-content: center;
+  justify-items: center;
   column-gap: 25px;
-  row-gap: 45px;
+  row-gap: 30px;
   box-sizing: border-box;
   padding: 95px 70px 30px 70px;
   margin: 0;
+  font-family: "Inter";
+  width: 100%;
+}
+
+.movies__list-no-result-box {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  min-height: 100vh;
+  padding-bottom: 0px;
+  grid-column: 4/-4;
+}
+
+.movies__list-no-result {
+  color: #a0a0a0;
+  font-size: 18px;
+  font-weight: normal;
+  line-height: 20px;
+  text-align: center;
+  justify-self: center;
+  align-self: center;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0;
+  margin: 20px 0px;
 }
 
 @media screen and (max-width: 770px) {

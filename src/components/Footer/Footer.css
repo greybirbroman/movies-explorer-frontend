@@ -52,7 +52,7 @@
 
 .footer__link:hover {
   cursor: pointer;
-  color: #2BE080;
+  color: #2be080;
 }
 
 @media screen and (max-width: 770px) {

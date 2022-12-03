@@ -1,6 +1,14 @@
 .movie {
   box-shadow: 0px 4px 30px rgba(0, 0, 0, 0.08);
   line-height: 0;
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  overflow: hidden;
+  max-height: 271px;
+  display: flex;
+  flex-direction: column;
 }
 
 .movie__btn {
@@ -9,38 +17,44 @@
   border: none;
   padding: 0;
   border-radius: 50%;
-  background: transparent url(../../images/favorite-movie-icon.svg) no-repeat
+  background: url(../../images/favorite-movie-icon.svg) no-repeat
     center;
   background-color: #f9f9f9;
   top: 0;
   right: 0;
-  transition: 0.7s ease;
+  transition: 0.5s ease;
 }
 
 .movie__btn:hover {
   cursor: pointer;
-  opacity: 0.7;
+  background-color: rgba(43,225,128,.5); 
 }
 
 .movie__btn_type_active {
-  background: url(../../images/favorite-move-icon-active.svg);
+  background: url(../../images/favorite-move-icon-active.svg) no-repeat center;
 }
 
 .movie__btn_type_delete {
-  background: url(../../images/favorite-movie-icon-delete.svg);
+  background: url(../../images/favorite-movie-icon-delete.svg) no-repeat center;
 }
 
 .movie__container {
   display: flex;
   justify-content: space-between;
-  padding: 14px 13px 14px;
+  align-items: center;
+  padding: 14px;
 }
 
 .movie__title {
   margin: 0;
   font-weight: 500;
-  font-size: 15px;
-  line-height: 18px;
+  font-size: 13px;
+  line-height: 16px;
+  padding-bottom: 9px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  max-width: 250px;
 }
 
 .movie__direction {
@@ -51,6 +65,42 @@
 }
 
 .movie__image {
+  display: block;
+  height: 100%;
   width: 100%;
-  object-fit: contain;
+  object-fit: cover;
+  overflow: hidden;
+  position: relative;
+
 }
+
+.movie__link::before {
+  content: url(../../images/icons8-youtube-play.svg);
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity .8s, visibility .6s ease-in;
+  z-index: 2;
+}
+
+.movie__link:hover:before {
+  opacity: 1;
+  visibility: visible;
+}
+
+.movie__link {
+  display: block;
+  height: 100%;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
