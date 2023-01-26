@@ -4,6 +4,7 @@ import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 import { useContext } from "react";
 import Header from "../Header/Header";
 import { useFormWithValidation } from "../../hooks/useFormWithValidation";
+import { NAME_ERR } from "../../utils/Const";
 
 function Profile({
   onLogout,
@@ -61,19 +62,23 @@ function Profile({
             <input
               name="name"
               type="text"
-              className={`profile__input ${errors.name &&'profile__input_error'}`}
+              className={`profile__input ${
+                errors.name && "profile__input_error"
+              }`}
               value={values?.name ?? currentUser.name}
               onChange={handleChange}
               required
-              disabled={inputDisabled}
               minLength="2"
+              disabled={inputDisabled}
+              pattern="^[A-Za-zА-Яа-яЁё /s -]+$"
+              title={NAME_ERR}
             ></input>
-          <span
-            className={`profile__info-message 
+            <span
+              className={`profile__info-message 
              ${!isValid ? `profile__info-message_error` : null}`}
-          >
-            {errors?.name}
-          </span>
+            >
+              {errors?.name && NAME_ERR}
+            </span>
           </fieldset>
 
           <fieldset className="profile__fields">
@@ -81,27 +86,29 @@ function Profile({
             <input
               name="email"
               type="email"
-              className={`profile__input ${errors.email && 'profile__input_error'}`}
+              className={`profile__input ${
+                errors.email && "profile__input_error"
+              }`}
               value={values?.email ?? currentUser.email}
               onChange={handleChange}
               required
               pattern="^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$"
               disabled={inputDisabled}
             ></input>
-          <span
-            className={`profile__info-message 
+            <span
+              className={`profile__info-message 
              ${!isValid ? `profile__info-message_error` : null}`}
-          >
-            {errors?.email}
-          </span>
+            >
+              {errors?.email}
+            </span>
           </fieldset>
 
           <span
             className={`profile__info-message 
              ${
                isProfileUpdateSuccessful
-                 ? `profile__info-message_active-success`
-                 : `profile__info-message_error`
+                 ? `profile__info-message profile__info-message_active-success`
+                 : `profile__info-message profile__info-message_error`
              }`}
           >
             {isProfileUpdateSuccessful
@@ -131,7 +138,7 @@ function Profile({
                 type="submit"
                 className={
                   !disabledButton || isChanged
-                    ? "profile__btn"
+                    ? "profile__btn profile__btn_type_save"
                     : "profile__btn_type_disabled"
                 }
                 onClick={handleSave}

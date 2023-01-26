@@ -7,7 +7,7 @@
   column-gap: 25px;
   row-gap: 30px;
   box-sizing: border-box;
-  padding: 95px 70px 30px 70px;
+  padding: 80px 70px 16px 70px;
   margin: 0;
   font-family: "Inter";
   width: 100%;
@@ -44,7 +44,7 @@
   }
 }
 
-@media screen and (max-width: 400px) {
+@media screen and (max-width: 458px) {
   .movies__list {
     column-gap: 0px;
     row-gap: 20px;

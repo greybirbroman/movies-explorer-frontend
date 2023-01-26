@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import "./Portfolio.css";
 
 function Portfolio() {
@@ -6,58 +7,34 @@ function Portfolio() {
       <p className="portfolio__title">Портфолио</p>
       <ul className="portfolio__list">
         <li className="portfolio__element">
-          <a
+          <Link
+            to={{ pathname: `https://github.com/greybirbroman/how-to-learn` }}
             className="portfolio__link"
             target="_blank"
-            href="https://github.com/greybirbroman/how-to-learn"
             rel="noreferrer noopener"
           >
             Статичный сайт
-          </a>
-          <a
-            className="portfolio__link-img"
-            target="_blank"
-            href="https://github.com/greybirbroman/how-to-learn"
-            rel="noreferrer noopener"
-          >
-            ↗
-          </a>
+          </Link>
         </li>
         <li className="portfolio__element">
-          <a
+          <Link
+            to={{ pathname: `https://github.com/greybirbroman/russian-travel` }}
             className="portfolio__link"
             target="_blank"
-            href="https://github.com/greybirbroman/russian-travel"
             rel="noreferrer noopener"
           >
             Адаптивный сайт
-          </a>
-          <a
-            className="portfolio__link-img"
-            target="_blank"
-            href="https://github.com/greybirbroman/russian-travel"
-            rel="noreferrer noopener"
-          >
-            ↗
-          </a>
+          </Link>
         </li>
         <li className="portfolio__element">
-          <a
+          <Link
+            to={{ pathname: `https://github.com/greybirbroman/mesto` }}
             className="portfolio__link"
             target="_blank"
-            href="https://github.com/greybirbroman/mesto"
             rel="noreferrer noopener"
           >
             Одностраничное приложение
-          </a>
-          <a
-            className="portfolio__link-img"
-            target="_blank"
-            href="https://github.com/greybirbroman/mesto"
-            rel="noreferrer noopener"
-          >
-            ↗
-          </a>
+          </Link>
         </li>
       </ul>
     </section>

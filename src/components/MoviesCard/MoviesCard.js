@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState} from "react";
 import { Link } from "react-router-dom";
 import "./MoviesCard.css";
 
@@ -43,13 +43,38 @@ function MoviesCard({
     onLike(movieCard);
   };
 
+  const [description, setDescription] = useState(false);
+
+  const flipClass = `flip-cards ${description ? "flip-cards_active" : ""}`;
+
+  const handleClick = () => {
+    if (!description) {
+      setDescription(true);
+    } else {
+      setDescription(false);
+    }
+  };
+
   return (
     <li className="movie">
       <div className="movie__container">
+        <h3 className="movie__title">{nameRU}</h3>
         <div className="movie__header">
-          <h3 className="movie__title">{nameRU}</h3>
-          <span className="movie__direction">
+          {/* <button type="button" className="movie__btn_trailer"></button> */}
+          <button
+            type="button"
+            className="movie__btn_description"
+            onClick={handleClick}
+          >
+            {!description ? "Описание" : "Постер"}
+          </button>
+          <span className="movie__duration">
             {getMovieDuration(movieCard.duration)}
+          </span>
+          <span className="movie__country">
+            {movieCard.country === "Unknown"
+              ? "Cтрана неизвестна"
+              : movieCard.country}
           </span>
         </div>
         {isMoviesPage ? (
@@ -72,15 +97,23 @@ function MoviesCard({
           <DeleteButton onDelete={UnlikeOrDelete} movieCard={movieCard} />
         )}
       </div>
-      <Link
-        className="movie__link"
-        to={{ pathname: `${trailer}` }}
-        target="_blank"
-        rel="noreferrer"
-        title="Посмотреть трейлер"
-      >
-        <img src={image} className="movie__image" alt={nameRU} />
-      </Link>
+
+      <div className={flipClass}>
+        <Link
+          className="flip-card_front movie__link"
+          to={{ pathname: `${trailer}` }}
+          target="_blank"
+          rel="noreferrer"
+          title="Посмотреть трейлер"
+        >
+          <img src={image} className="movie__image" alt={nameRU} />
+        </Link>
+        <div className="flip-card_back movie__description-box">
+          <span className="movie__span movie__description">{`Режисер: ${movieCard.director}, ${movieCard.year}`}</span>
+          <span className="movie__span movie__description">{`Страна: ${movieCard.country}`}</span>
+          <span className="movie__description">{movieCard.description}</span>
+        </div>
+      </div>
     </li>
   );
 }

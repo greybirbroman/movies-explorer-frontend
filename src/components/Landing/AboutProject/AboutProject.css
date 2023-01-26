@@ -115,9 +115,9 @@
   }
 }
 
-@media screen and (max-width: 400px) {
+@media screen and (max-width: 500px) {
   .project {
-    padding: 70px 18px;
+    padding: 70px 14px;
   }
 
   .brief__title {

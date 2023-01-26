@@ -38,11 +38,12 @@
   border-bottom: 1px solid #e8e8e8;
   background-color: #fff;
   width: 100%;
-  padding: 0 0 10px;
+  padding: 10px 0 10px;
 }
 
 .login__input:focus {
-  box-shadow: 0 0 5px rgba(43, 224, 128, 1);
+  /* box-shadow: 0 0 5px rgba(43, 224, 128, 1); */
+  box-shadow: 5px 5px 5px -5px rgba(0, 0, 0, 0.6) inset;
   background-color: #fff;
 }
 

@@ -1,4 +1,4 @@
-export const SEARCH_ERROR =
+export const SEARCH_ERROR_API =
   "Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз";
 
 export const SEARCH_ERROR_NO_DATA =
@@ -7,6 +7,8 @@ export const SEARCH_WORD_ERROR =
   "Пожалуйста попробуйте уточнить запрос.";
 
   export const NOT_FOUND = 'Ничего не найдено...'
+
+  export const NAME_ERR = "Поле должно быть заполнено и может содержать только латиницу, кириллицу, пробел или дефис"
   
 export const NO_SHORTS = 'У вас нет сохраненных короткометражек.'
 export const SAVE_ERROR = 'Не удалось сохранить. Пожалуйста попробуйте еще раз.'

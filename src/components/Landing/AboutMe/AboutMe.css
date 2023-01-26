@@ -9,12 +9,12 @@
   font-size: 50px;
   letter-spacing: -0.04em;
   margin: 0;
+  padding: 0;
   font-weight: normal;
 }
 
 .aboutme__container {
   display: flex;
-  flex-flow: row wrap-reverse;
   justify-content: space-between;
 
   box-sizing: border-box;
@@ -94,11 +94,12 @@
 
 .aboutme__photo {
   width: 100%;
-  max-height: 327px;
+  max-height: 307px;
   object-fit: cover;
   border-radius: 10px;
   flex: 0 0 270px;
   margin-left: 20px;
+  
 }
 
 @media screen and (max-width: 770px) {
@@ -127,13 +128,13 @@
     padding-top: 20px;
     max-width: 364px;
   }
-
-  .aboutme__photo {
-    flex-basis: 255px;
-  }
 }
 
 @media screen and (max-width: 650px) {
+
+  .aboutme__container {
+    flex-direction: column-reverse;
+  }
   .aboutme__info {
     flex-basis: 100%;
     margin-top: 40px;
@@ -148,13 +149,12 @@
   }
 
   .aboutme__photo {
-    min-width: 292px;
-    flex-basis: 292px;
-    margin: 0 auto;
+    margin: 0;
+    object-fit: cover;
   }
 }
 
-@media screen and (max-width: 400px) {
+@media screen and (max-width: 500px) {
   .aboutme {
     padding: 70px 14px;
   }

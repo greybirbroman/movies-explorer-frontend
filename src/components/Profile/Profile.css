@@ -22,7 +22,7 @@
   border: none;
   margin: 0;
   padding: 0;
-  padding-bottom: 16px;
+  padding-bottom: 28px;
   height: 42px;
   display: flex;
   flex-direction: column;
@@ -67,7 +67,9 @@
 }
 
 .profile__input:focus {
-  box-shadow: 0 0 5px rgba(0,0,0,0.1);
+  /* box-shadow: 0 0 5px rgba(0,0,0,0.1); */
+  box-shadow: 5px 5px 5px -5px rgba(0, 0, 0, 0.4);
+  border-bottom: 1px solid black;
   background-color: #fff;
 }
 
@@ -119,6 +121,18 @@
   color: #ee3465;
 }
 
+.profile__btn_type_save {
+  background: #2be080;
+  color: black;
+  border-radius: 10px;
+  height: 40px;
+  transition: all 0.7s;
+}
+
+.profile__btn_type_save:hover {
+opacity: 0.7;
+}
+
 .profile__info-message {
   font-size: 10px;
   margin-top: 6px;
@@ -136,6 +150,7 @@
   margin: 0 auto;
   color: #2be080;
   text-align: center;
+  font-size: 14px;
 }
 
 .profile__info-message_error {

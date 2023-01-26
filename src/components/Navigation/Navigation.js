@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink, useLocation, useHistory, Link } from "react-router-dom";
 import PopupNavigation from "../PopupNavigation/PopupNavigation";
 import "./Navigation.css";
 
 function Navigation() {
   const location = useLocation();
+  const history = useHistory();
   const [isPopupVisible, setIsPopupVisible] = useState(false);
 
   const handleClose = () => {
@@ -43,7 +44,7 @@ function Navigation() {
           Аккаунт
         </NavLink>
       ) : (
-        <React.Fragment />
+        <React.Fragment/>
       )}
 
       <button className="menu__button" onClick={handleClick} />

@@ -5,8 +5,9 @@
   padding: 0;
   margin: 0;
   width: 100%;
-  overflow: hidden;
   max-height: 271px;
+  min-height: 271px;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
 }
@@ -17,17 +18,19 @@
   border: none;
   padding: 0;
   border-radius: 50%;
-  background: url(../../images/favorite-movie-icon.svg) no-repeat
-    center;
+  background: url(../../images/favorite-movie-icon.svg) no-repeat center;
   background-color: #f9f9f9;
   top: 0;
   right: 0;
-  transition: 0.5s ease;
+  transition: 0.7s ease;
+  position: absolute;
+  top: 30%;
+  right: 14px;
 }
 
 .movie__btn:hover {
   cursor: pointer;
-  background-color: rgba(43,225,128,.5); 
+  background-color: rgba(43, 225, 128, 0.2);
 }
 
 .movie__btn_type_active {
@@ -40,28 +43,97 @@
 
 .movie__container {
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
-  align-items: center;
+
   padding: 14px;
+  position: relative;
+  max-width: 100%;
 }
 
 .movie__title {
   margin: 0;
   font-weight: 500;
-  font-size: 13px;
-  line-height: 16px;
+  font-size: 15px;
+  line-height: 18px;
   padding-bottom: 9px;
+  width: 90%;
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
-  max-width: 250px;
 }
 
-.movie__direction {
+.movie__duration {
   color: #a0a0a0;
   font-weight: normal;
   font-size: 11px;
   line-height: 13px;
+  margin-left: 10px;
+}
+
+.movie__description-box {
+  padding: 5px;
+  width: 100%;
+  overflow: auto;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+.movie__description {
+  width: 100%;
+  color: black;
+  font-weight: normal;
+  font-size: 11px;
+  line-height: 13px;
+  box-sizing: border-box;
+}
+
+.movie__btn_description {
+  border-radius: 20px;
+  font-size: 11px;
+  line-height: 13px;
+  background-color: white;
+  color: black;
+  border: 1px solid black;
+  transition: all 0.7s;
+}
+
+.movie__btn_description:hover {
+  cursor: pointer;
+  color: black;
+  border: 1px solid black;
+  /* background: linear-gradient(
+    to left,
+    rgb(72, 204, 224) 1%,
+    rgb(66, 139, 235) 18%,
+    rgb(81, 90, 220) 38%,
+    rgb(190, 64, 192) 59%,
+    rgb(250, 102, 65) 99%
+  ); */
+  background-color: #2be080;
+  opacity: 1;
+}
+
+.movie__btn_trailer {
+  background: transparent
+    url(../../images/iconfinder-videologoplayicon-3993847_112649.svg) no-repeat
+    center;
+  width: 25px;
+  height: 25px;
+  border: none;
+  padding: 0;
+}
+
+.movie__span {
+  font-size: 11px;
+  line-height: 13px;
+  margin-bottom: 10px;
+  color: black;
+}
+
+.movie__span:first-child {
+  margin-bottom: 5px;
 }
 
 .movie__image {
@@ -69,9 +141,6 @@
   height: 100%;
   width: 100%;
   object-fit: cover;
-  overflow: hidden;
-  position: relative;
-
 }
 
 .movie__link::before {
@@ -87,7 +156,7 @@
   bottom: 0;
   visibility: hidden;
   opacity: 0;
-  transition: opacity .8s, visibility .6s ease-in;
+  transition: opacity 0.7s, visibility 0.7s ease-in;
   z-index: 2;
 }
 
@@ -102,5 +171,86 @@
   width: 100%;
   position: relative;
   overflow: hidden;
+  text-decoration: none;
 }
 
+.movie__country {
+  color: #a0a0a0;
+  font-weight: normal;
+  font-size: 11px;
+  line-height: 13px;
+  margin-left: 10px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.movie__header {
+  width: 90%;
+  max-width: 280px;
+  display: flex;
+  align-items: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.flip-cards {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transition: all 1s;
+  transform-style: preserve-3d;
+}
+
+.flip-cards_active {
+  transform: perspective(600px) rotateY(-180deg);
+}
+
+.flip-card_front,
+.flip-card_back {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  backface-visibility: hidden;
+}
+.fflip-card_front {
+  transform: perspective(600px) rotateY(0deg);
+}
+
+.flip-card_back {
+  transform: perspective(600px) rotateY(180deg);
+}
+
+@media screen and (max-width: 1160px) {
+  .movie__title {
+    width: 90%;
+  }
+}
+
+@media screen and (max-width: 1029px) {
+  .movie__header {
+    max-width: 100%;
+  }
+}
+
+@media screen and (max-width: 650px) {
+  .movie {
+    max-height: 300px;
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 425px) {
+  .movie {
+    max-height: 271px;
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 450px) {
+  .movie__title {
+    font-size: 13px;
+    line-height: 15px;
+  }
+}

@@ -33,6 +33,8 @@ import {
   ADD_2,
   ADD_3,
   NO_SAVED_FILMS,
+  SEARCH_ERROR_API,
+  NO_SHORTS,
 } from "../../utils/Const";
 
 function App() {
@@ -161,6 +163,22 @@ function App() {
     console.log("Вышли из учетной записи");
   }
 
+  function findMovies(movies, searchParams) {
+    if(searchParams === undefined) searchParams = ''
+    const moviesSearchByKeyword = movies.filter((movie) => {
+      return (
+        movie.nameRU.toLowerCase().includes(searchParams.toLowerCase()) ||
+        movie.nameEN.toLowerCase().includes(searchParams.toLowerCase()) ||
+        movie.director.toLowerCase().includes(searchParams.toLowerCase()) ||
+        movie.description.toLowerCase().includes(searchParams.toLowerCase())
+      );
+      
+    });
+  
+     return moviesSearchByKeyword;
+  
+}
+
   function searchShortMovies(movies) {
     return movies.filter((movie) => movie.duration <= SHORT_FILMS);
   }
@@ -200,6 +218,7 @@ function App() {
             );
             setLastSearchWord(lastSearchWord);
             handleMoviesSearch(lastSearchWord);
+            handleSavedMoviesSearch()
           }
         }
       })
@@ -272,78 +291,68 @@ function App() {
   }
 
   // -----------------------------------------   Главный поиск фильмов ---------------------------------------- //
-  function handleMoviesSearch(searchParams) {
-    //resetErrorMessage();
-    localStorage.setItem("searchWord", JSON.stringify(searchParams));
+  async function handleMoviesSearch(searchParams) {
     let filterResults = [];
     let filterShorts = [];
+    localStorage.setItem("searchWord", JSON.stringify(searchParams));
+    if (localStorage.getItem("filteredMovies"))
+      localStorage.removeItem("filteredMovies");
 
     if (!localStorage.movies) {
-      moviesApi
-        .getAllMovies()
-        .then((res) => {
-          localStorage.setItem("movies", JSON.stringify(res));
-          filterResults = res.filter((movie) => {
-            return (movie.nameRU || movie.nameEN || movie.direcor)
-              .toLowerCase()
-              .includes(searchParams);
-          });
-          setLimit(windowSizeHandler);
-          //---------SHORTS_CHECK
-          if (localStorage.getItem("shortIsOn") === "true") {
-            filterShorts = searchShortMovies(filterResults);
+      try {
+        const movies = await moviesApi.getAllMovies();
+        localStorage.setItem("movies", JSON.stringify(movies));
+        filterResults = findMovies(movies, searchParams);
+
+        setLimit(windowSizeHandler);
+        if (localStorage.getItem("shortIsOn") === "true") {
+          filterShorts = searchShortMovies(filterResults);
+          if (filterShorts.length === 0) {
+            setErrorMessage(SEARCH_ERROR_NO_DATA);
+          } else {
             setFilteredMovies(filterShorts);
-            if (filterShorts.length === 0) {
-              setErrorMessage(SEARCH_ERROR_NO_DATA);
-            }
+            moviesRender(filterResults, limit);
+          }
+        } else {
+          if (filterResults.length === 0) {
+            setErrorMessage(SEARCH_ERROR_NO_DATA);
           } else {
             setFilteredMovies(filterResults);
-            if (filterResults.length === 0) {
-              setErrorMessage(SEARCH_ERROR_NO_DATA);
-            }
-          }
-          if (shortIsOn) {
-            moviesRender(filterShorts, limit);
-          } else {
             moviesRender(filterResults, limit);
-            localStorage.setItem(
-              "filteredMovies",
-              JSON.stringify(filterResults)
-            );
           }
-          setLastSearchWord(JSON.parse(localStorage.getItem("searchWord")));
-        })
-        .catch((err) => console.log(err));
+        }
+        localStorage.setItem("filteredMovies", JSON.stringify(filterResults));
+        setLastSearchWord(JSON.parse(localStorage.getItem("searchWord")));
+      } catch (e) {
+        console.error(e);
+        setErrorMessage(SEARCH_ERROR_API);
+      }
     } else {
       setIsLoading(true);
       //---------- берем фильмы из localStorage
-      filterResults = JSON.parse(localStorage.getItem("movies")).filter(
-        (movie) => {
-          return (movie.nameRU || movie.nameEN || movie.direcor)
-            .toLowerCase()
-            .includes(searchParams);
-        }
+      filterResults = findMovies(
+        JSON.parse(localStorage.getItem("movies")),
+        searchParams
       );
       setLimit(windowSizeHandler);
       setTimeout(() => setIsLoading(false), 500);
       if (localStorage.getItem("shortIsOn") === "true") {
         filterShorts = searchShortMovies(filterResults);
-        setFilteredMovies(filterShorts);
         if (filterShorts.length === 0) {
           setErrorMessage(SEARCH_ERROR_NO_DATA);
+        } else {
+          setFilteredMovies(filterShorts);
+          moviesRender(filterShorts, limit);
         }
       } else {
-        setFilteredMovies(filterResults);
         if (filterResults.length === 0) {
           setErrorMessage(SEARCH_ERROR_NO_DATA);
+        } else {
+          setFilteredMovies(filterResults);
+          moviesRender(filterResults, limit);
         }
       }
-      if (shortIsOn) {
-        moviesRender(filterShorts, limit);
-      } else {
-        moviesRender(filterResults, limit);
-        localStorage.setItem("filteredMovies", JSON.stringify(filterResults));
-      }
+      localStorage.setItem("filteredMovies", JSON.stringify(filterResults));
       setLastSearchWord(JSON.parse(localStorage.getItem("searchWord")));
     }
   }
@@ -354,10 +363,10 @@ function App() {
     const shortMovies = searchShortMovies(filteredMovies);
     setShortIsOn(!shortIsOn);
     if (!shortIsOn) {
-      moviesRender(shortMovies, limit);
-      if (filteredMovies.length === 0) {
+      if (shortMovies.length === 0) {
         setErrorMessage(SEARCH_ERROR_NO_DATA);
       }
+      moviesRender(shortMovies, limit);
     } else {
       moviesRender(filteredMovies, limit);
     }
@@ -366,89 +375,93 @@ function App() {
 
   //effects for /movies
   useEffect(() => {
-    //const movies = JSON.parse(localStorage.getItem("filteredMovies"));
+    const filteredMovies = JSON.parse(localStorage.getItem("filteredMovies"));
     const shortMovies = searchShortMovies(filteredMovies);
     setShortIsOn(localStorage.getItem("shortIsOn") === "true");
-    if (filteredMovies) {
+    if (localStorage.getItem("savedShortsIsOn") === "true") {
+      moviesRender(shortMovies, limit);
+    } else {
       moviesRender(filteredMovies, limit);
-      if (localStorage.getItem("shortIsOn") === "true") {
-        moviesRender(shortMovies, limit);
-      } else {
-        moviesRender(filteredMovies, limit);
-      }
     }
   }, []);
 
   // -----------------------------------------   Главный поиск Сохраненных Фильмов ---------------------------------------- //
-  const handleSavedMoviesSearch = (searchString) => {
-    let filterShorts = [];
-    let savedMovies = [];
+  // const handleSavedMoviesSearch = (searchString) => {
+  //   setIsLoading(true);
+  //   let filterShorts = [];
+  //   let filterResults = [];
+
+  //   //const savedMovies = JSON.parse(localStorage.getItem("savedMovies"));
+  //   filterResults = findMovies(allLikedMovies, searchString);
+  //   if (localStorage.getItem("savedShortsIsOn") === "true") {
+  //     filterShorts = searchShortMovies(filterResults);
+  //     if (filterShorts.length === 0) {
+  //       setErrorMessageSavedMovies(SEARCH_ERROR_NO_DATA);
+  //     }
+  //     setAllLikedMovies(filterShorts);
+  //   } else {
+  //     setAllLikedMovies(filterResults);
+  //   }
+    
+  //   //localStorage.setItem("savedMovies", JSON.stringify(filterResults));
+  //   setTimeout(() => setIsLoading(false), 500);
+  // };
+
+  const handleSavedMoviesSearch = (searchParams) => {
     setIsLoading(true);
-    savedMovies = JSON.parse(localStorage.getItem("savedMovies"));
-    const filterResults = JSON.parse(
-      localStorage.getItem("savedMovies")
-    ).filter((movie) => {
-      return (movie.nameRU || movie.nameEN || movie.director)
-        .toLowerCase()
-        .includes(searchString);
-    });
+    let filterShorts;
+    let filterResults;
+    const savedMovies = JSON.parse(localStorage.getItem("savedMovies"));
+    filterResults = findMovies(savedMovies, searchParams)
+    filterShorts = searchShortMovies(filterResults);
     if (localStorage.getItem("savedShortsIsOn") === "true") {
-      filterShorts = searchShortMovies(filterResults);
-      setAllLikedMovies(filterShorts);
       if (filterShorts.length === 0) {
-        setErrorMessageSavedMovies(SEARCH_ERROR_NO_DATA);
+        setErrorMessageSavedMovies(SEARCH_ERROR_NO_DATA)
+      } else {
+        setAllLikedMovies(filterShorts)
+        localStorage.setItem("resultMovies", JSON.stringify(filterShorts))
       }
-    }
-    if (searchString === undefined) {
-      setAllLikedMovies(savedMovies);
-    }
-    if (savedMoviesShortIsOn) {
-      setAllLikedMovies(filterShorts);
     } else {
-      setAllLikedMovies(filterResults);
-      if (filterResults.length === 0) {
-        setErrorMessageSavedMovies(SEARCH_WORD_ERROR);
+      if(filterResults.length === 0) {
+        setErrorMessageSavedMovies(SEARCH_ERROR_NO_DATA)
+      } else {
+        setAllLikedMovies(filterResults)
+        localStorage.setItem("resultMovies", JSON.stringify(filterResults))
       }
     }
-    //localStorage.setItem("savedMovies", JSON.stringify(filterResults));
-    setTimeout(() => setIsLoading(false), 500);
-  };
+    setTimeout(() => setIsLoading(false), 500)
+}
+
 
   //отрисовка сохраненных фильмов с фильтром короткометражек
   const shortSavedMoviesSwitchClick = () => {
-    const likedMovies = JSON.parse(localStorage.getItem("savedMovies"));
+    const movies = JSON.parse(localStorage.getItem("resultMovies"));
+    const savedShortMovies = searchShortMovies(movies);
     setSavedMoviesShortIsOn(!savedMoviesShortIsOn);
     if (!savedMoviesShortIsOn) {
-      //localStorage.setItem("savedShortsIsOn", true);
-      const savedShortMovies = searchShortMovies(allLikedMovies);
+      if (savedShortMovies.length === 0) {
+        setErrorMessageSavedMovies(SEARCH_ERROR_NO_DATA);
+      }
       setAllLikedMovies(savedShortMovies);
-      if (!savedShortMovies) {
-        setErrorMessageSavedMovies(SEARCH_ERROR_NO_DATA);
-      }
     } else {
-      //setSavedMoviesShortIsOn(false);
-      //localStorage.setItem("savedShortsIsOn", false);
-      setAllLikedMovies(likedMovies);
-      if (likedMovies.length === 0) {
-        setErrorMessageSavedMovies(SEARCH_ERROR_NO_DATA);
-      }
+      setAllLikedMovies(movies);
     }
     localStorage.setItem("savedShortsIsOn", !savedMoviesShortIsOn);
   };
 
   // effects for /saved-movies
   useEffect(() => {
-    //const likedMovies = JSON.parse(localStorage.getItem("savedMovies"));
-    const savedShortMovies = searchShortMovies(likedMovies);
-    setAllLikedMovies(likedMovies);
+    const savedMovies = JSON.parse(localStorage.getItem("savedMovies"));
+    const savedShortMovies = searchShortMovies(savedMovies);
+    //setAllLikedMovies(savedMovies);
     if (localStorage.getItem("savedShortsIsOn") === "true") {
       setSavedMoviesShortIsOn(true);
       setAllLikedMovies(savedShortMovies);
     } else {
       setSavedMoviesShortIsOn(false);
-      setAllLikedMovies(likedMovies);
+      setAllLikedMovies(savedMovies);
     }
-  }, [likedMovies]);
+  }, []);
 
   // Проверяем массив перед Рендером карточек
   const moviesRender = (movies, itemsToRender) => {
@@ -484,6 +497,7 @@ function App() {
   // Правила для кнопки ELSE
   const showMore = () => {
     let newLimit;
+    const filteredMovies = JSON.parse(localStorage.getItem("filteredMovies"));
     if (limit + resultsToAdd < filteredMovies.length) {
       newLimit = limit + resultsToAdd;
       moviesRender(filteredMovies.slice(0, newLimit));
