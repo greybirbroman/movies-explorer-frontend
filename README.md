@@ -1,4 +1,4 @@
-<h1 align="center">Movies-Explorer</h1>
+<h1 align="center">Movies-Explorer (frontend)</h1>
 
 ![html](https://img.shields.io/badge/html-F5F5F5?style=for-the-badge&logo=html5&logoColor=#E34F26)
 ![css](https://img.shields.io/badge/css-F5F5F5?style=for-the-badge&logo=css3&logoColor=0000FF) 
