@@ -1,6 +1,4 @@
-# Movies-Explorer
-## Дипломная работа на курсе web-разработчик в **Яндекс.Практикум**
-___
+<h1 align="center">Movies-Explorer</h1>
 
 ![html](https://img.shields.io/badge/html-F5F5F5?style=for-the-badge&logo=html5&logoColor=#E34F26)
 ![css](https://img.shields.io/badge/css-F5F5F5?style=for-the-badge&logo=css3&logoColor=0000FF) 
@@ -12,8 +10,12 @@ ___
 ![webpack](https://img.shields.io/badge/webpack-F5F5F5?style=for-the-badge&logo=webpack&logoColor=#F05032)
 
 ___
-### **Интерактивная страница для поиска и сохранения фильмов**
+<h2 align=""> Дипломная работа на курсе web-разработчик в Яндекс.Практикум</h2>
+
 ___
+<h3 align=""> Интерактивная страница для поиска и сохранения фильмов</h3>
+
+
 ![screen](/src/images/RESULT_MainFilms1280.png)
 
 
@@ -36,11 +38,32 @@ ___
 результат.
 
 **После выхода из учетной записи**:
-+ Сохраненные пользователем фильмы хранятся в базе данных.
++ сохраненные пользователем фильмы хранятся в базе данных.
 ___
 
 ### Ссылка на макет:
 <a href="https://www.figma.com/file/k3zwrtd5JTxezoDQTsUwVG/Diploma-(Copy)?node-id=932%3A4079&t=pIdmKoIu1mVyTBot-0"><img src="https://img.shields.io/badge/figma-F5F5F5?style=for-the-badge&logo=figma&logoColor=#F24E1E"/></a>
 ___
 
-Domain http://greybirbmovies.nomoredomains.icu
+### Запуск проекта:
+1. Клонировать репозиторий
+```
+git clone https://github.com/greybirbroman/movies-explorer-frontend.git
+```
+2. Установить зависимости
+```
+1. cd movies-explorer-frontend
+2. npm ci
+```
+3. Запустить проект 
+```
+npm start
+```
+___
+### Планы по доработке:
++ Провести общий рефакторинг кода;
++ Улучшить адаптивность на медиазапросах для планшетных и мобильных устройств;
++ Улучшить валидацию форм на странице профиля/регистрации/авторизации;
++ Сделать popup с подтверждением удаления фильма;
+  
+### Статус: проект сдан 98/100
