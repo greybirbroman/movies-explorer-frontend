@@ -10,7 +10,7 @@
 ![webpack](https://img.shields.io/badge/webpack-F5F5F5?style=for-the-badge&logo=webpack&logoColor=#F05032)
 
 ___
-<h2 align="center"> Дипломная работа на курсе web-разработчик в Яндекс.Практикум</h2>
+<h3 align="center"> Дипломная работа на курсе web-разработчик в Яндекс.Практикум</h3>
 
 ___
 <h3 align="center"> Интерактивная страница для поиска и сохранения фильмов</h3>
