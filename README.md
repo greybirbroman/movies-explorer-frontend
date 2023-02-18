@@ -48,14 +48,14 @@ ___
 <a href="https://www.figma.com/file/k3zwrtd5JTxezoDQTsUwVG/Diploma-(Copy)?node-id=932%3A4079&t=pIdmKoIu1mVyTBot-0"><img src="https://img.shields.io/badge/figma-F5F5F5?style=for-the-badge&logo=figma&logoColor=#F24E1E"/></a>
 ___
 
-### Запуск проекта:
+### Запуск проекта с использованием серверной части:
 1. Клонировать репозиторий
 ```
-git clone https://github.com/greybirbroman/movies-explorer-frontend.git
+git clone https://github.com/greybirbroman/movies-explorer-api.git
 ```
 2. Установить зависимости
 ```
-1. cd movies-explorer-frontend
+1. cd movies-explorer-api
 2. npm ci
 ```
 3. Запустить проект 
